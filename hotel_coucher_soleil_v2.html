@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌅 Hôtel Le Coucher du Soleil</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0c0f1e;--card:rgba(255,255,255,0.04);
+  --gold:#d4a853;--gold-l:#f0c97a;--sunset:#e8703a;
+  --text:#f0e6d3;--muted:#9a8f82;--faint:#5a5249;
+  --green:#2ecc71;--red:#e74c3c;--blue:#3498db;
+  --border:rgba(212,168,83,0.15);--glass:rgba(212,168,83,0.08);
+}
+html,body,#root{height:100%;min-height:100vh;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);}
+.app{min-height:100vh;background:radial-gradient(ellipse at 85% 0%,rgba(232,112,58,.13),transparent 55%),radial-gradient(ellipse at 15% 100%,rgba(212,168,83,.08),transparent 55%),var(--bg);}
+
+/* ── LOGIN ── */
+.lw{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 10%,rgba(232,112,58,.22),transparent 65%),var(--bg);}
+.lc{width:420px;max-width:94vw;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:22px;padding:48px 36px;text-align:center;box-shadow:0 40px 80px rgba(0,0,0,.55);}
+.ll{width:72px;height:72px;background:linear-gradient(135deg,var(--sunset),var(--gold));border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 8px 32px rgba(232,112,58,.4);}
+.ltitle{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
+.lsub{font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:2px;text-transform:uppercase;}
+.lusers{display:flex;gap:8px;margin-bottom:28px;justify-content:center;}
+.lusr{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 16px;cursor:pointer;transition:all .2s;font-size:12px;font-family:'Nunito',sans-serif;}
+.lusr.active{background:var(--glass);border-color:rgba(212,168,83,.35);color:var(--gold);}
+.lusr:hover:not(.active){border-color:rgba(255,255,255,.15);}
+.li{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(212,168,83,.2);border-radius:12px;color:var(--text);padding:14px 16px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;margin-bottom:14px;text-align:center;letter-spacing:3px;transition:border-color .2s;}
+.li:focus{border-color:var(--gold);}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--sunset),var(--gold));color:#1a0f00;font-weight:800;font-size:14px;font-family:'Nunito',sans-serif;border:none;border-radius:12px;padding:14px;cursor:pointer;text-transform:uppercase;letter-spacing:1.5px;transition:opacity .2s,transform .2s;}
+.lbtn:hover{opacity:.9;transform:translateY(-1px);}
+.le{color:var(--red);font-size:13px;margin-top:10px;}
+.linfo{margin-top:20px;background:rgba(52,152,219,.08);border:1px solid rgba(52,152,219,.2);border-radius:10px;padding:12px 16px;font-size:11px;color:rgba(52,152,219,.9);text-align:left;line-height:1.7;}
+
+/* ── HEADER ── */
+.hdr{background:rgba(12,15,30,.97);border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:0;z-index:300;display:flex;align-items:center;justify-content:space-between;height:58px;gap:10px;}
+.ht{font-family:'Playfair Display',serif;font-size:15px;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;flex-shrink:0;}
+.nav{display:flex;gap:2px;}
+.nt{background:transparent;border:1px solid transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;padding:6px 11px;border-radius:8px;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.5px;}
+.nt.a{background:var(--glass);color:var(--gold);border-color:rgba(212,168,83,.2);}
+.nt:hover:not(.a){background:rgba(255,255,255,.04);color:var(--text);}
+.hacts{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.htotal{background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.25);color:var(--gold);font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.obadge{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:var(--red);font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.userbadge{font-size:10px;color:var(--muted);padding:3px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.08);}
+.logbtn{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--muted);font-size:10px;padding:4px 10px;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;}
+.logbtn:hover{border-color:rgba(231,76,60,.4);color:var(--red);}
+
+/* ── CONTAINER ── */
+.cont{padding:18px;max-width:1440px;margin:0 auto;}
+.stit{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+/* ── TOTAL BAR ── */
+.totalbar{background:linear-gradient(135deg,rgba(212,168,83,.12),rgba(232,112,58,.08));border:1px solid rgba(212,168,83,.25);border-radius:14px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.tbitem{display:flex;flex-direction:column;gap:3px;align-items:center;}
+.tbval{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;}
+.tblbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.tbdiv{width:1px;height:36px;background:rgba(212,168,83,.15);}
+
+/* ── ROOMS GRID ── */
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+
+/* ── ROOM CARD ── */
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .3s;}
+.rcard:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+.rcard.occ{border-color:rgba(231,76,60,.45);box-shadow:0 0 20px rgba(231,76,60,.07);}
+.rcard.free{border-color:rgba(46,204,113,.2);}
+
+/* Image */
+.rim{position:relative;height:120px;background:linear-gradient(135deg,rgba(212,168,83,.1),rgba(232,112,58,.06));overflow:hidden;cursor:pointer;}
+.rimg{width:100%;height:100%;object-fit:cover;display:block;}
+.rph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--faint);font-size:11px;}
+.rov{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;font-size:12px;color:white;font-weight:700;}
+.rim:hover .rov{opacity:1;}
+.sbadge{position:absolute;top:8px;right:8px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.sbadge.occ{background:rgba(231,76,60,.92);color:white;animation:bpulse 1.5s infinite;}
+.sbadge.free{background:rgba(46,204,113,.88);color:white;}
+@keyframes bpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(231,76,60,.5)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(231,76,60,0)}}
+
+/* Body */
+.rbody{padding:12px;}
+.rnin{background:transparent;border:none;border-bottom:1px solid rgba(212,168,83,.18);color:var(--text);font-family:'Playfair Display',serif;font-size:15px;font-weight:600;width:100%;padding:2px 0 5px;margin-bottom:11px;outline:none;transition:border-color .2s;}
+.rnin:focus{border-color:var(--gold);}
+
+/* Times row */
+.trow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.fg{display:flex;flex-direction:column;gap:3px;}
+.fl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:800;}
+.fin{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:var(--text);font-family:'Nunito',sans-serif;font-size:12px;padding:6px 8px;outline:none;transition:border-color .2s;width:100%;}
+.fin:focus{border-color:rgba(212,168,83,.4);background:rgba(212,168,83,.05);}
+input[type="time"]::-webkit-calendar-picker-indicator{filter:invert(.4);}
+input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.4);}
+input[type="number"]::-webkit-inner-spin-button{opacity:.3;}
+
+/* PASSAGE + PRIX row — prominent */
+.pxrow{display:flex;gap:8px;align-items:stretch;margin-bottom:10px;}
+.pxprix{flex:0 0 90px;display:flex;flex-direction:column;gap:3px;}
+.pxprixin{background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.25);border-radius:8px;color:var(--gold);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:6px 8px;outline:none;width:100%;text-align:center;}
+.pxprixin:focus{border-color:var(--gold);background:rgba(212,168,83,.12);}
+.pxnuit{flex:0 0 70px;display:flex;flex-direction:column;gap:3px;}
+
+/* PASSAGE BUTTON */
+.pbtn{flex:1;padding:0 10px;height:100%;min-height:50px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:transform .15s,opacity .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.pbtn:active{transform:scale(.97);}
+.pfree{background:linear-gradient(135deg,#1a8a4a,#2ecc71);color:white;box-shadow:0 4px 14px rgba(46,204,113,.25);}
+.pfree:hover{box-shadow:0 6px 20px rgba(46,204,113,.4);}
+.pocc{background:linear-gradient(135deg,#c0392b,#e74c3c);color:white;animation:btnblink 1.5s infinite;}
+@keyframes btnblink{0%,100%{opacity:1;box-shadow:0 4px 14px rgba(231,76,60,.3)}50%{opacity:.82;box-shadow:0 4px 24px rgba(231,76,60,.6)}}
+.pbtn-icon{font-size:16px;}
+.pbtn-txt{font-size:10px;letter-spacing:1.5px;}
+
+/* Auto-total chambre */
+.ctotal{display:flex;justify-content:space-between;align-items:center;background:rgba(212,168,83,.07);border:1px solid rgba(212,168,83,.15);border-radius:8px;padding:7px 10px;margin-top:8px;}
+.ctotl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:700;}
+.ctotv{color:var(--gold);font-weight:800;font-size:15px;font-family:'Playfair Display',serif;}
+
+/* ── DASHBOARD ── */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:22px;}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;}
+.sico{font-size:26px;margin-bottom:8px;}
+.sv{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;margin-bottom:3px;}
+.sv.g{color:var(--gold)}.sv.r{color:var(--red)}.sv.gr{color:var(--green)}.sv.w{color:var(--text)}.sv.b{color:var(--blue);}
+.sl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.tbwrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:auto;margin-bottom:16px;}
+.dtbl{width:100%;border-collapse:collapse;font-size:12px;}
+.dtbl th{text-align:left;padding:9px 12px;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);font-weight:700;white-space:nowrap;}
+.dtbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.025);white-space:nowrap;}
+.dtbl tr:last-child td{border-bottom:none;}
+.dtbl tr:hover td{background:rgba(255,255,255,.015);}
+.tst{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:800;}
+.tst.occ{background:rgba(231,76,60,.14);color:var(--red);border:1px solid rgba(231,76,60,.25);}
+.tst.free{background:rgba(46,204,113,.1);color:var(--green);border:1px solid rgba(46,204,113,.2);}
+
+/* ── HISTORY ── */
+.hctrl{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.din{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;padding:8px 13px;outline:none;color-scheme:dark;}
+.din:focus{border-color:var(--gold);}
+.expbtn{background:linear-gradient(135deg,var(--sunset),var(--gold));color:#1a0f00;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;padding:8px 16px;border-radius:9px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:.8px;}
+.expbtn:disabled{opacity:.35;cursor:not-allowed;}
+.delbtn{background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.28);color:var(--red);font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;padding:8px 16px;border-radius:9px;cursor:pointer;transition:all .2s;}
+.delbtn:hover{background:rgba(231,76,60,.18);}
+.delbtn:disabled{opacity:.3;cursor:not-allowed;}
+.dchip{background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--muted);border-radius:7px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;transition:all .2s;}
+.dchip.da{background:var(--glass);border-color:rgba(212,168,83,.35);color:var(--gold);}
+.hsum{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px;display:flex;gap:24px;flex-wrap:wrap;}
+.hsi{display:flex;flex-direction:column;gap:4px;}
+.hsv{font-family:'Playfair Display',serif;font-size:20px;}
+.hsl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.est{text-align:center;padding:50px 20px;color:var(--muted);}
+.estio{font-size:40px;margin-bottom:12px;}
+
+/* ── RESET DAILY ── */
+.rstbar{background:rgba(231,76,60,.06);border:1px solid rgba(231,76,60,.18);border-radius:12px;padding:14px 18px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.rstinfo{font-size:12px;color:var(--muted);}
+.rstbtn{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--red);font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;padding:9px 18px;border-radius:9px;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.8px;}
+.rstbtn:hover{background:rgba(231,76,60,.22);}
+.rstbtn:disabled{opacity:.3;cursor:not-allowed;}
+
+/* ── NOTIFICATION ── */
+.notif{position:fixed;top:72px;right:18px;background:rgba(14,18,34,.97);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,.5);pointer-events:none;animation:nin .25s ease;max-width:280px;}
+.notif.occ{border-color:rgba(231,76,60,.5);color:var(--red);}
+.notif.free{border-color:rgba(46,204,113,.4);color:var(--green);}
+.notif.success{border-color:rgba(212,168,83,.4);color:var(--gold);}
+.notif.warn{border-color:rgba(231,76,60,.5);color:#f39c12;}
+@keyframes nin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── MODAL ── */
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
+.mbox{background:#131828;border:1px solid var(--border);border-radius:18px;padding:32px;width:100%;max-width:380px;text-align:center;}
+.mico{font-size:36px;margin-bottom:14px;}
+.mtit{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold);margin-bottom:8px;}
+.msub{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.min{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(212,168,83,.2);border-radius:11px;color:var(--text);padding:13px 15px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;margin-bottom:14px;text-align:center;letter-spacing:3px;}
+.min:focus{border-color:var(--gold);}
+.mbtnrow{display:flex;gap:10px;}
+.mcancel{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--muted);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:12px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.mcancel:hover{border-color:rgba(255,255,255,.2);}
+.mconfirm{flex:1;background:linear-gradient(135deg,var(--sunset),var(--gold));color:#1a0f00;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:12px;cursor:pointer;transition:opacity .2s;}
+.mconfirm:hover{opacity:.9;}
+.merr{color:var(--red);font-size:12px;margin-top:8px;}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:rgba(212,168,83,.18);border-radius:3px;}
+
+@media(max-width:768px){
+  .hdr{padding:0 10px;height:54px;}.ht{font-size:12px;}.nt{padding:5px 8px;font-size:10px;}
+  .cont{padding:10px;}.sgrid{grid-template-columns:repeat(2,1fr);}
+  .rgrid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+  .htotal{display:none;}
+}
+@media(max-width:480px){
+  .rgrid{grid-template-columns:1fr;}.nav{gap:1px;}.nt{padding:4px 6px;font-size:9px;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── CONSTANTES ──
+const SUPER_ADMIN = { role: "superadmin", name: "Super Admin", password: "botelo2026" };
+const ADMIN       = { role: "admin",      name: "Gérant·e",    password: "botelo2025" };
+
+const ROOMS_KEY   = "hcs_rooms_v4";
+const HISTORY_KEY = "hcs_history_v4";
+
+function getToday(){ return new Date().toISOString().slice(0,10); }
+function getTime(){  return new Date().toTimeString().slice(0,5); }
+function fmtD(d){    return new Date(d+"T12:00:00").toLocaleDateString("fr-FR",{weekday:"long",year:"numeric",month:"long",day:"numeric"}); }
+function calcTotal(r){ return (parseFloat(r.price)||0)*(parseFloat(r.night)||0); }
+
+const DEFAULTS = Array.from({length:19},(_,i)=>({
+  id:i+1, name:`Chambre ${String(i+1).padStart(2,"0")}`,
+  image:null, entryTime:"", exitTime:"", occupied:false, night:"", price:""
+}));
+
+// ── HELPERS STORAGE ──
+function loadRooms(){
+  try{ const d=localStorage.getItem(ROOMS_KEY); return d?JSON.parse(d):DEFAULTS; }catch{ return DEFAULTS; }
+}
+function loadHistory(){
+  try{ const d=localStorage.getItem(HISTORY_KEY); return d?JSON.parse(d):{}; }catch{ return {}; }
+}
+function saveToStorage(rooms, history){
+  try{ localStorage.setItem(ROOMS_KEY,   JSON.stringify(rooms));   }catch{}
+  try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }catch{}
+}
+
+// ── MODAL MOT DE PASSE ──
+function PwdModal({ title, sub, onConfirm, onCancel }){
+  const [v,setV]=useState("");
+  const [e,setE]=useState("");
+  const check=()=>{
+    if(v===SUPER_ADMIN.password){ onConfirm(); }
+    else{ setE("Code incorrect. Seul le Super Admin peut effectuer cette action."); setV(""); }
+  };
+  return (
+    <div className="moverlay" onClick={e=>e.target===e.currentTarget&&onCancel()}>
+      <div className="mbox">
+        <div className="mico">🔐</div>
+        <div className="mtit">{title}</div>
+        <div className="msub">{sub}</div>
+        <input className="min" type="password" placeholder="Code Super Admin"
+          value={v} onChange={e=>setV(e.target.value)} onKeyDown={e=>e.key==="Enter"&&check()} autoFocus/>
+        {e&&<div className="merr">⚠ {e}</div>}
+        <div className="mbtnrow" style={{marginTop:"16px"}}>
+          <button className="mcancel" onClick={onCancel}>Annuler</button>
+          <button className="mconfirm" onClick={check}>Confirmer</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── APP ──
+function App(){
+  const [user,   setUser]   = useState(null);
+  const [rooms,  setRooms]  = useState(loadRooms);
+  const [history,setHistory]= useState(loadHistory);
+  const [tab,    setTab]    = useState("rooms");
+  const [histDay,setHistDay]= useState(getToday());
+  const [notif,  setNotif]  = useState(null);
+  const [modal,  setModal]  = useState(null); // {title,sub,onConfirm}
+  const fileRefs = useRef({});
+
+  // Login state
+  const [selRole, setSelRole] = useState("admin");
+  const [pwd,     setPwd]     = useState("");
+  const [loginErr,setLoginErr]= useState("");
+
+  // ── Persist ──
+  const persist = useCallback((r,h)=>{
+    setRooms(r); setHistory(h); saveToStorage(r,h);
+  },[]);
+
+  // Snapshot journalier automatique
+  const snapshot = useCallback((newRooms, prevHistory)=>{
+    const today = getToday();
+    const snap = {
+      rooms: newRooms.map(r=>({...r,image:null})),
+      totalEarnings: newRooms.reduce((s,r)=>s+calcTotal(r),0),
+      occupiedCount: newRooms.filter(r=>r.occupied).length,
+      savedAt: new Date().toISOString(),
+      date: today
+    };
+    return { ...prevHistory, [today]: snap };
+  },[]);
+
+  const updateRooms = useCallback((newRooms)=>{
+    const newHist = snapshot(newRooms, history);
+    persist(newRooms, newHist);
+  },[history,persist,snapshot]);
+
+  const notify = (msg,type="success")=>{ setNotif({msg,type}); setTimeout(()=>setNotif(null),3400); };
+
+  // ── LOGIN ──
+  const handleLogin = ()=>{
+    const target = selRole==="superadmin" ? SUPER_ADMIN : ADMIN;
+    if(pwd===target.password){ setUser(target); setPwd(""); setLoginErr(""); }
+    else{ setLoginErr("Mot de passe incorrect."); setTimeout(()=>setLoginErr(""),2500); }
+  };
+
+  // ── UPDATE ROOM ──
+  const updRoom = (id,ch)=> updateRooms(rooms.map(r=>r.id===id?{...r,...ch}:r));
+
+  // ── PASSAGE ──
+  const togglePassage = (room)=>{
+    if(!room.occupied){
+      updRoom(room.id,{occupied:true, entryTime:room.entryTime||getTime(), exitTime:""});
+      notify(`🔴 ${room.name} — OCCUPÉE`,"occ");
+    } else {
+      updRoom(room.id,{occupied:false, exitTime:room.exitTime||getTime()});
+      notify(`🟢 ${room.name} — LIBRE`,"free");
+    }
+  };
+
+  // ── IMAGE UPLOAD ──
+  const uploadImg = (roomId,file)=>{
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=e=>{updRoom(roomId,{image:e.target.result}); notify("📸 Image mise à jour");};
+    reader.readAsDataURL(file);
+  };
+
+  // ── RESET JOURNÉE (Super Admin uniquement) ──
+  const doReset = ()=>{
+    const reset = DEFAULTS.map((d,i)=>({...d,name:rooms[i]?.name||d.name,image:rooms[i]?.image||null}));
+    updateRooms(reset);
+    notify("✨ Journée réinitialisée — historique conservé","success");
+    setModal(null);
+  };
+
+  const askReset = ()=>{
+    if(user?.role==="superadmin"){ doReset(); return; }
+    setModal({title:"Réinitialisation journée",sub:"Cette action est réservée au Super Admin. Entrez le code botelo2026 pour continuer.",onConfirm:doReset});
+  };
+
+  // ── SUPPRIMER HISTORIQUE (Super Admin uniquement) ──
+  const doDelHistory = (day)=>{
+    const newH={...history}; delete newH[day];
+    persist(rooms,newH);
+    if(histDay===day) setHistDay(getToday());
+    notify("🗑 Historique du "+day+" supprimé","warn");
+    setModal(null);
+  };
+
+  const askDelHistory = (day)=>{
+    setModal({
+      title:"Supprimer l'historique",
+      sub:`Supprimer définitivement l'historique du ${fmtD(day)} ? Seul le Super Admin peut effectuer cette action.`,
+      onConfirm:()=>doDelHistory(day)
+    });
+  };
+
+  // ── EXPORT ──
+  const exportReport = (day)=>{
+    const rec=history[day]; if(!rec)return;
+    const L=[
+      "═══════════════════════════════════════════════════════",
+      "         HÔTEL LE COUCHER DU SOLEIL",
+      `         Rapport journalier — ${day}  (${fmtD(day)})`,
+      "═══════════════════════════════════════════════════════","",
+      "  RÉSUMÉ","  ───────────────────────────────────────────",
+      `  Gains totaux         : ${rec.totalEarnings.toLocaleString()} FCFA`,
+      `  Chambres occupées    : ${rec.occupiedCount} / 19`,
+      `  Chambres libres      : ${19-rec.occupiedCount} / 19`,
+      `  Snapshot             : ${rec.savedAt?new Date(rec.savedAt).toLocaleTimeString("fr-FR"):"—"}`,
+      "","  DÉTAIL PAR CHAMBRE","  ───────────────────────────────────────────"
+    ];
+    (rec.rooms||[]).forEach(r=>{
+      const amt=calcTotal(r);
+      L.push(`  ${r.name.padEnd(16)} | ${r.occupied?"OCCUPÉE":"LIBRE   "} | Entrée:${r.entryTime||"--:--"} Sortie:${r.exitTime||"--:--"} | ${r.night||0}n × ${r.price||0} FCFA = ${amt.toLocaleString()} FCFA`);
+    });
+    L.push("","═══════════════════════════════════════════════════════");
+    const blob=new Blob([L.join("\n")],{type:"text/plain;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");a.href=url;a.download=`rapport_${day}.txt`;a.click();
+    URL.revokeObjectURL(url); notify("📄 Rapport exporté !");
+  };
+
+  // ── CALCULS LIVE ──
+  const occRooms   = rooms.filter(r=>r.occupied);
+  const freeRooms  = rooms.filter(r=>!r.occupied);
+  const liveTotal  = rooms.reduce((s,r)=>s+calcTotal(r),0);
+  const occTotal   = occRooms.reduce((s,r)=>s+calcTotal(r),0);
+  const histDays   = Object.keys(history).sort().reverse();
+  const histRec    = history[histDay];
+
+  // ── LOGIN SCREEN ──
+  if(!user) return (
+    <div className="lw">
+      <div className="lc">
+        <div className="ll">🌅</div>
+        <h1 className="ltitle">Le Coucher du Soleil</h1>
+        <p className="lsub">Système de Gestion</p>
+        <div className="lusers">
+          <button className={`lusr${selRole==="admin"?" active":""}`} onClick={()=>setSelRole("admin")}>
+            👤 Gérant·e
+          </button>
+          <button className={`lusr${selRole==="superadmin"?" active":""}`} onClick={()=>setSelRole("superadmin")}>
+            👑 Super Admin
+          </button>
+        </div>
+        <input className="li" type="password" placeholder="••••••••••"
+          value={pwd} onChange={e=>setPwd(e.target.value)}
+          onKeyDown={e=>e.key==="Enter"&&handleLogin()} autoFocus/>
+        <button className="lbtn" onClick={handleLogin}>Connexion</button>
+        {loginErr&&<p className="le">⚠ {loginErr}</p>}
+        <div className="linfo">
+          <strong style={{color:"var(--gold)"}}>👤 Gérant·e :</strong> Peut gérer les chambres (entrées, sorties, prix, passage). Ne peut pas supprimer.<br/>
+          <strong style={{color:"var(--gold)"}}>👑 Super Admin :</strong> Accès complet — modifier et supprimer l'historique, réinitialiser les journées.
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="app">
+      {notif && <div className={`notif ${notif.type}`}>{notif.msg}</div>}
+      {modal && (
+        <PwdModal
+          title={modal.title} sub={modal.sub}
+          onConfirm={modal.onConfirm}
+          onCancel={()=>setModal(null)}
+        />
+      )}
+
+      {/* ── HEADER ── */}
+      <header className="hdr">
+        <h1 className="ht">🌅 Le Coucher du Soleil</h1>
+        <nav className="nav">
+          {[["rooms","🏨 Chambres"],["dashboard","📊 Tableau"],["history","📅 Historique"]].map(([k,l])=>(
+            <button key={k} className={`nt${tab===k?" a":""}`} onClick={()=>setTab(k)}>{l}</button>
+          ))}
+        </nav>
+        <div className="hacts">
+          <span className="htotal">💰 {liveTotal.toLocaleString()} FCFA</span>
+          <span className="obadge">🔴 {occRooms.length} occ.</span>
+          <span className="userbadge">{user.role==="superadmin"?"👑":"👤"} {user.name}</span>
+          <button className="logbtn" onClick={()=>setUser(null)}>Déco.</button>
+        </div>
+      </header>
+
+      {/* ══════════════════════════════════════════ */}
+      {/* ──  ONGLET CHAMBRES  ── */}
+      {/* ══════════════════════════════════════════ */}
+      {tab==="rooms" && (
+        <div className="cont">
+          {/* Barre de totaux live */}
+          <div className="totalbar">
+            <div className="tbitem">
+              <span className="tbval" style={{color:"var(--gold)"}}>{liveTotal.toLocaleString()}</span>
+              <span className="tblbl">Total journée FCFA</span>
+            </div>
+            <div className="tbdiv"/>
+            <div className="tbitem">
+              <span className="tbval" style={{color:"var(--red)"}}>{occTotal.toLocaleString()}</span>
+              <span className="tblbl">Montant occupées FCFA</span>
+            </div>
+            <div className="tbdiv"/>
+            <div className="tbitem">
+              <span className="tbval" style={{color:"var(--red)"}}>{occRooms.length}</span>
+              <span className="tblbl">Chambres occupées</span>
+            </div>
+            <div className="tbdiv"/>
+            <div className="tbitem">
+              <span className="tbval" style={{color:"var(--green)"}}>{freeRooms.length}</span>
+              <span className="tblbl">Chambres libres</span>
+            </div>
+            <div className="tbdiv"/>
+            <div className="tbitem">
+              <span className="tbval" style={{color:"var(--text)",fontSize:"14px"}}>{getToday()}</span>
+              <span className="tblbl">Journée en cours</span>
+            </div>
+          </div>
+
+          <h2 className="stit">🏨 Chambres — {rooms.length} au total</h2>
+          <div className="rgrid">
+            {rooms.map(room=>{
+              const roomTotal = calcTotal(room);
+              return (
+              <div key={room.id} className={`rcard ${room.occupied?"occ":"free"}`}>
+
+                {/* Zone image */}
+                <div className="rim" onClick={()=>fileRefs.current[room.id]?.click()}>
+                  {room.image
+                    ?<img src={room.image} alt={room.name} className="rimg"/>
+                    :<div className="rph"><span style={{fontSize:"24px"}}>🛏️</span><span>Cliquer pour ajouter photo</span></div>
+                  }
+                  <div className="rov">📷 Changer la photo</div>
+                  <span className={`sbadge ${room.occupied?"occ":"free"}`}>
+                    {room.occupied?"● Occupé":"● Libre"}
+                  </span>
+                  <input ref={el=>(fileRefs.current[room.id]=el)} type="file" accept="image/*"
+                    style={{display:"none"}} onChange={e=>uploadImg(room.id,e.target.files[0])}/>
+                </div>
+
+                {/* Corps */}
+                <div className="rbody">
+                  {/* Nom */}
+                  <input className="rnin" value={room.name}
+                    onChange={e=>updRoom(room.id,{name:e.target.value})}
+                    placeholder="Nom de la chambre"/>
+
+                  {/* Heures */}
+                  <div className="trow">
+                    <div className="fg">
+                      <label className="fl">⏰ Heure entrée</label>
+                      <input className="fin" type="time" value={room.entryTime}
+                        onChange={e=>updRoom(room.id,{entryTime:e.target.value})}/>
+                    </div>
+                    <div className="fg">
+                      <label className="fl">🚪 Heure sortie</label>
+                      <input className="fin" type="time" value={room.exitTime}
+                        onChange={e=>updRoom(room.id,{exitTime:e.target.value})}/>
+                    </div>
+                  </div>
+
+                  {/* PASSAGE + PRIX + NUITS — ligne principale */}
+                  <div className="pxrow">
+                    {/* Bouton PASSAGE */}
+                    <button className={`pbtn ${room.occupied?"pocc":"pfree"}`}
+                      onClick={()=>togglePassage(room)}>
+                      <span className="pbtn-icon">{room.occupied?"🔴":"🟢"}</span>
+                      <span className="pbtn-txt">PASSAGE</span>
+                    </button>
+
+                    {/* Nuits */}
+                    <div className="pxnuit">
+                      <label className="fl">🌙 Nuits</label>
+                      <input className="fin pxprixin" type="number" min="0" value={room.night}
+                        placeholder="0" style={{color:"var(--text)",background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)"}}
+                        onChange={e=>updRoom(room.id,{night:e.target.value})}/>
+                    </div>
+
+                    {/* Prix */}
+                    <div className="pxprix">
+                      <label className="fl">💰 Prix FCFA</label>
+                      <input className="fin pxprixin" type="number" min="0" value={room.price}
+                        placeholder="0"
+                        onChange={e=>updRoom(room.id,{price:e.target.value})}/>
+                    </div>
+                  </div>
+
+                  {/* Total automatique */}
+                  <div className="ctotal">
+                    <span className="ctotl">💵 Total chambre</span>
+                    <span className="ctotv">{roomTotal.toLocaleString()} FCFA</span>
+                  </div>
+                </div>
+              </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════ */}
+      {/* ──  TABLEAU DE BORD  ── */}
+      {/* ══════════════════════════════════════════ */}
+      {tab==="dashboard" && (
+        <div className="cont">
+          <h2 className="stit">
+            📊 Tableau de Bord
+            <span style={{fontSize:"12px",color:"var(--muted)",fontFamily:"Nunito",fontWeight:"600"}}>
+              {new Date().toLocaleDateString("fr-FR",{weekday:"long",year:"numeric",month:"long",day:"numeric"})}
+            </span>
+          </h2>
+
+          {/* Stats */}
+          <div className="sgrid">
+            {[
+              ["🏨","19","w","Total chambres"],
+              ["🔴",occRooms.length,"r","Occupées"],
+              ["🟢",freeRooms.length,"gr","Libres"],
+              ["💰",liveTotal.toLocaleString()+" FCFA","g","Gains journée"],
+              ["🔥",occTotal.toLocaleString()+" FCFA","r","Gains occupées"],
+              ["📈",rooms.filter(r=>r.entryTime).length,"b","Entrées enregistrées"],
+              ["📋",rooms.filter(r=>r.exitTime).length,"w","Sorties enregistrées"],
+            ].map(([ico,val,cls,lbl],i)=>(
+              <div className="sc" key={i}>
+                <div className="sico">{ico}</div>
+                <div className={`sv ${cls}`}>{val}</div>
+                <div className="sl">{lbl}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tableau détaillé */}
+          <div className="tbwrap">
+            <table className="dtbl">
+              <thead><tr>
+                <th>#</th><th>Chambre</th><th>Statut</th>
+                <th>Entrée</th><th>Sortie</th><th>Nuits</th><th>Prix FCFA</th><th>Total FCFA</th>
+              </tr></thead>
+              <tbody>
+                {rooms.map(r=>{
+                  const t=calcTotal(r);
+                  return(
+                  <tr key={r.id}>
+                    <td style={{color:"var(--faint)"}}>{r.id}</td>
+                    <td style={{fontWeight:"700"}}>{r.name}</td>
+                    <td><span className={`tst ${r.occupied?"occ":"free"}`}>{r.occupied?"● Occupée":"● Libre"}</span></td>
+                    <td style={{color:"var(--muted)"}}>{r.entryTime||"—"}</td>
+                    <td style={{color:"var(--muted)"}}>{r.exitTime||"—"}</td>
+                    <td>{r.night||"—"}</td>
+                    <td>{r.price?parseFloat(r.price).toLocaleString():"—"}</td>
+                    <td style={{color:t>0?"var(--gold)":"var(--faint)",fontWeight:"800"}}>
+                      {t>0?t.toLocaleString()+" FCFA":"—"}
+                    </td>
+                  </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot>
+                <tr style={{borderTop:"1px solid var(--border)"}}>
+                  <td colSpan="7" style={{padding:"10px 12px",color:"var(--gold)",fontWeight:"800",fontSize:"13px"}}>
+                    TOTAL JOURNÉE
+                  </td>
+                  <td style={{padding:"10px 12px",color:"var(--gold)",fontWeight:"800",fontSize:"15px",fontFamily:"'Playfair Display',serif"}}>
+                    {liveTotal.toLocaleString()} FCFA
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          {/* Reset journée */}
+          <div className="rstbar">
+            <div className="rstinfo">
+              🔄 Réinitialiser les chambres pour une nouvelle journée.<br/>
+              <small>L'historique du jour sera conservé automatiquement.</small>
+              {user?.role==="admin" && <><br/><small style={{color:"var(--red)"}}>⚠ Nécessite le code Super Admin.</small></>}
+            </div>
+            <button className="rstbtn" onClick={askReset}>Nouvelle journée</button>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════ */}
+      {/* ──  HISTORIQUE  ── */}
+      {/* ══════════════════════════════════════════ */}
+      {tab==="history" && (
+        <div className="cont" style={{maxWidth:"1100px"}}>
+          <h2 className="stit">
+            📅 Historique complet
+            <span style={{fontSize:"12px",color:"var(--muted)",fontFamily:"Nunito",fontWeight:"600"}}>
+              {histDays.length} journée{histDays.length!==1?"s":""} enregistrée{histDays.length!==1?"s":""}
+            </span>
+          </h2>
+
+          <div className="hctrl">
+            <input className="din" type="date" value={histDay} onChange={e=>setHistDay(e.target.value)}/>
+            <button className="expbtn" onClick={()=>exportReport(histDay)} disabled={!histRec}>
+              📄 Exporter
+            </button>
+            <button className="delbtn" onClick={()=>askDelHistory(histDay)} disabled={!histRec}
+              title={user?.role!=="superadmin"?"Nécessite le code Super Admin":""}>
+              🗑 Supprimer{user?.role!=="superadmin"?" (Admin requis)":""}
+            </button>
+          </div>
+
+          {/* Chips des jours disponibles */}
+          <div style={{display:"flex",gap:"6px",flexWrap:"wrap",marginBottom:"18px"}}>
+            {histDays.length===0
+              ? <span style={{fontSize:"12px",color:"var(--faint)"}}>Aucun historique enregistré.</span>
+              : histDays.map(d=>(
+                <button key={d} className={`dchip${d===histDay?" da":""}`} onClick={()=>setHistDay(d)}>
+                  {d}
+                </button>
+              ))
+            }
+          </div>
+
+          {histRec ? (
+            <>
+              <div className="hsum">
+                {[
+                  [histRec.totalEarnings!=null?(histRec.totalEarnings.toLocaleString()+" FCFA"):"—","var(--gold)","Gains journaliers"],
+                  [histRec.occupiedCount??0,"var(--red)","Chambres occupées"],
+                  [19-(histRec.occupiedCount??0),"var(--green)","Chambres libres"],
+                  [histRec.savedAt?new Date(histRec.savedAt).toLocaleTimeString("fr-FR"):"—","var(--muted)","Dernière sauvegarde"],
+                ].map(([v,c,l],i)=>(
+                  <div className="hsi" key={i}>
+                    <span className="hsv" style={{color:c}}>{v}</span>
+                    <span className="hsl">{l}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="tbwrap">
+                <table className="dtbl">
+                  <thead><tr>
+                    <th>Chambre</th><th>Statut</th>
+                    <th>Entrée</th><th>Sortie</th><th>Nuits</th><th>Prix FCFA</th><th>Total FCFA</th>
+                  </tr></thead>
+                  <tbody>
+                    {(histRec.rooms||[]).map(r=>{
+                      const t=calcTotal(r);
+                      return(
+                      <tr key={r.id}>
+                        <td style={{fontWeight:"700"}}>{r.name}</td>
+                        <td><span className={`tst ${r.occupied?"occ":"free"}`}>{r.occupied?"● Occupée":"● Libre"}</span></td>
+                        <td style={{color:"var(--muted)"}}>{r.entryTime||"—"}</td>
+                        <td style={{color:"var(--muted)"}}>{r.exitTime||"—"}</td>
+                        <td>{r.night||"—"}</td>
+                        <td>{r.price?parseFloat(r.price).toLocaleString():"—"}</td>
+                        <td style={{color:t>0?"var(--gold)":"var(--faint)",fontWeight:"800"}}>
+                          {t>0?t.toLocaleString()+" FCFA":"—"}
+                        </td>
+                      </tr>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr style={{borderTop:"1px solid var(--border)"}}>
+                      <td colSpan="6" style={{padding:"10px 12px",color:"var(--gold)",fontWeight:"800",fontSize:"13px"}}>
+                        TOTAL JOURNÉE DU {histDay}
+                      </td>
+                      <td style={{padding:"10px 12px",color:"var(--gold)",fontWeight:"800",fontSize:"15px",fontFamily:"'Playfair Display',serif"}}>
+                        {(histRec.totalEarnings||0).toLocaleString()} FCFA
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <div style={{marginTop:"12px",display:"flex",gap:"10px",flexWrap:"wrap"}}>
+                <button className="expbtn" onClick={()=>exportReport(histDay)}>📄 Exporter ce rapport (.txt)</button>
+                <button className="delbtn" onClick={()=>askDelHistory(histDay)}>
+                  🗑 Supprimer cet historique {user?.role!=="superadmin"?"(code Admin requis)":""}
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="est">
+              <div className="estio">📅</div>
+              <p style={{fontSize:"15px",marginBottom:"10px"}}>Aucun enregistrement pour le {histDay}.</p>
+              <p style={{fontSize:"12px",color:"var(--faint)"}}>
+                Les données sont sauvegardées automatiquement à chaque modification d'une chambre.<br/>
+                L'historique est permanent — il ne peut être supprimé que par le Super Admin.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
