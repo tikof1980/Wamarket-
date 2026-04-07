@@ -1,5 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCvQj-mhypnwhXRcVLBFX0_m7vOslv5fAg",
+  authDomain: "wamarket-6664d.firebaseapp.com",
+  projectId: "wamarket-6664d",
+  storageBucket: "wamarket-6664d.firebasestorage.app",
+  messagingSenderId: "817163946711",
+  appId: "1:817163946711:web:ccff69c0132be24fed7e92"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script><html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
