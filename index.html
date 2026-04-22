@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAMARKET.RESTO</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,sans-serif; }
+
+:root {
+    --vert: #1B8E3A;
+    --vert-fonce: #0F5F24;
+    --vert-clair: #4CAF50;
+    --bleu: #1976D2;
+    --bleu-fonce: #0D47A1;
+    --rouge: #D32F2F;
+    --rouge-fonce: #B71C1C;
+    --gris: #F5F5F5;
+    --dark: #212121;
+}
+
+body {
+    background: linear-gradient(135deg, #E8F5E9 0%, #E3F2FD 50%, #FFEBEE 100%);
+    min-height: 100vh;
+    color: var(--dark);
+}
+
+.header {
+    background: linear-gradient(90deg, var(--vert) 0%, var(--bleu) 70%, var(--rouge) 100%);
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header h1 { font-size: 22px; letter-spacing: 2px; }
+.badge { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 13px; }
+
+.nav {
+    background: white;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    position: sticky;
+    top: 62px;
+    z-index: 99;
+}
+
+.nav button {
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    background: var(--gris);
+    color: var(--dark);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.nav button.active {
+    background: linear-gradient(90deg, var(--vert), var(--bleu));
+    color: white;
+}
+
+.container { max-width: 1300px; margin: 0 auto; padding: 25px 20px; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+.page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--vert-fonce);
+    border-bottom: 3px solid var(--vert);
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.stat-card.vert { background: linear-gradient(135deg, var(--vert), var(--vert-fonce)); }
+.stat-card.bleu { background: linear-gradient(135deg, var(--bleu), var(--bleu-fonce)); }
+.stat-card.rouge { background: linear-gradient(135deg, var(--rouge), var(--rouge-fonce)); }
+.stat-card.mix { background: linear-gradient(135deg, var(--vert), var(--bleu)); }
+.stat-card .icon { font-size: 40px; margin-bottom: 10px; }
+.stat-card h3 { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
+.stat-card .value { font-size: 24px; font-weight: bold; }
+
+.cats-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.cat-btn {
+    padding: 10px 18px;
+    border: 2px solid var(--vert);
+    background: white;
+    color: var(--vert-fonce);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cat-btn.active {
+    background: linear-gradient(90deg, var(--vert), var(--bleu));
+    color: white;
+    border-color: transparent;
+}
+
+.produits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.produit-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-top: 4px solid var(--vert);
+}
+
+.produit-img {
+    height: 180px;
+    background: linear-gradient(135deg, #E8F5E9, #E3F2FD);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    overflow: hidden;
+}
+
+.produit-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.produit-info { padding: 15px; }
+.produit-info h3 { color: var(--vert-fonce); margin-bottom: 5px; font-size: 17px; }
+.cat-tag {
+    display: inline-block;
+    background: var(--bleu);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+.desc { color: #666; font-size: 13px; margin-bottom: 10px; min-height: 35px; }
+.prix { color: var(--rouge); font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+
+.actions { display: flex; gap: 8px; }
+
+.btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.btn-vert { background: var(--vert); color: white; }
+.btn-bleu { background: var(--bleu); color: white; }
+.btn-rouge { background: var(--rouge); color: white; }
+
+.btn-add {
+    background: linear-gradient(90deg, var(--vert), var(--bleu));
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.card-ajouter {
+    background: linear-gradient(135deg, #E8F5E9, #E3F2FD);
+    border: 3px dashed var(--vert);
+    border-radius: 15px;
+    min-height: 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 20px;
+    text-align: center;
+}
+
+.card-ajouter .plus { font-size: 70px; color: var(--vert); margin-bottom: 15px; }
+.card-ajouter h3 { color: var(--vert-fonce); margin-bottom: 8px; }
+.card-ajouter p { color: #666; font-size: 13px; }
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal.show { display: block; }
+
+.modal-content {
+    background: white;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 15px;
+    border-top: 5px solid var(--vert);
+}
+
+.modal-content h2 {
+    color: var(--vert-fonce);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--gris);
+    padding-bottom: 10px;
+}
+
+.modal-content label {
+    display: block;
+    font-weight: bold;
+    color: var(--vert-fonce);
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.modal-content input, .modal-content select, .modal-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.upload-zone {
+    border: 2px dashed var(--bleu);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    background: #E3F2FD;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.upload-zone input[type="file"] { display: none; }
+
+.preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: none;
+}
+
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+.notif {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: linear-gradient(90deg, var(--vert), var(--vert-clair));
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 2000;
+    display: none;
+    font-weight: bold;
+}
+
+.empty { text-align: center; padding: 50px; color: #888; }
+
+.footer {
+    background: linear-gradient(90deg, var(--vert-fonce), var(--bleu-fonce), var(--rouge-fonce));
+    color: white;
+    padding: 25px;
+    text-align: center;
+    margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🍽️ WAMARKET.RESTO</h1>
+    <div class="badge" id="heure">--:--</div>
+</div>
+
+<div class="nav">
+    <button class="active" data-screen="accueil">🏠 Accueil</button>
+    <button data-screen="menu">🍲 Menu</button>
+    <button data-screen="galerie">🖼️ Galerie</button>
+    <button data-screen="caisse">💰 Caisse</button>
+    <button data-screen="stats">📊 Stats</button>
+</div>
+
+<div class="container">
+
+    <div id="accueil" class="screen active">
+        <h2 class="page-title">🏠 Tableau de bord</h2>
+        <div class="stats-grid">
+            <div class="stat-card vert"><div class="icon">🍲</div><h3>Produits</h3><div class="value" id="sProduits">0</div></div>
+            <div class="stat-card bleu"><div class="icon">📦</div><h3>Catégories</h3><div class="value" id="sCats">0</div></div>
+            <div class="stat-card mix"><div class="icon">💵</div><h3>Recette du jour</h3><div class="value" id="sRecette">0 F</div></div>
+            <div class="stat-card rouge"><div class="icon">🧾</div><h3>Ventes</h3><div class="value" id="sVentes">0</div></div>
+        </div>
+        <h2 class="page-title">🌟 Nos spécialités</h2>
+        <div class="produits-grid" id="gridAccueil"></div>
+    </div>
+
+    <div id="menu" class="screen">
+        <h2 class="page-title">
+            🍲 Menu
+            <button class="btn-add" id="btnAddMenu">➕ Ajouter</button>
+        </h2>
+        <div class="cats-bar" id="catsBar"></div>
+        <div class="produits-grid" id="gridMenu"></div>
+    </div>
+
+    <div id="galerie" class="screen">
+        <h2 class="page-title">
+            🖼️ Galerie
+            <button class="btn-add" id="btnAddGalerie">➕ Ajouter</button>
+        </h2>
+        <div class="produits-grid" id="gridGalerie"></div>
+    </div>
+
+    <div id="caisse" class="screen">
+        <h2 class="page-title">💰 Caisse</h2>
+        <div class="stat-card mix" style="max-width:400px;margin-bottom:20px">
+            <div class="icon">💰</div><h3>Total aujourd'hui</h3>
+            <div class="value" id="totalJour">0 FCFA</div>
+        </div>
+        <div id="listeCaisse"></div>
+    </div>
+
+    <div id="stats" class="screen">
+        <h2 class="page-title">📊 Statistiques</h2>
+        <div id="statsDetail"></div>
+    </div>
+
+</div>
+
+<div id="modalAjout" class="modal">
+    <div class="modal-content">
+        <h2>➕ Ajouter un plat</h2>
+        <label>📸 Photo (optionnel)</label>
+        <div class="upload-zone" id="uploadZone">
+            <div style="font-size:40px">📷</div>
+            <p><strong>Choisir une photo</strong></p>
+            <input type="file" id="photoP" accept="image/*">
+        </div>
+        <img id="previewImg" class="preview">
+        <label>🍽️ Nom *</label>
+        <input type="text" id="nomP" placeholder="Ex: Riz au gras">
+        <label>📂 Catégorie *</label>
+        <select id="catP">
+            <option value="">-- Choisir --</option>
+            <option value="Plats">🍲 Plats</option>
+            <option value="Entrées">🥗 Entrées</option>
+            <option value="Boissons">🥤 Boissons</option>
+            <option value="Eau">💧 Eau</option>
+            <option value="Désserts">🍰 Désserts</option>
+            <option value="Grillades">🔥 Grillades</option>
+            <option value="Petit-déjeuner">☕ Petit-déjeuner</option>
+        </select>
+        <label>💰 Prix FCFA *</label>
+        <input type="number" id="prixP" placeholder="2500">
+        <label>😀 Emoji</label>
+        <input type="text" id="emojiP" placeholder="🍛" maxlength="4">
+        <label>📝 Description</label>
+        <textarea id="descP" rows="3"></textarea>
+        <div class="modal-actions">
+            <button class="btn btn-vert" id="btnValider">✅ Ajouter</button>
+            <button class="btn btn-rouge" id="btnAnnuler">❌ Annuler</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalVente" class="modal">
+    <div class="modal-content">
+        <h2>🛒 Vendre</h2>
+        <div id="infoVente"></div>
+        <label>Quantité</label>
+        <input type="number" id="qteV" value="1" min="1">
+        <label>Table / Client</label>
+        <input type="text" id="tableV" placeholder="Table 5">
+        <div class="modal-actions">
+            <button class="btn btn-vert" id="btnValiderVente">💰 Valider</button>
+            <button class="btn btn-rouge" id="btnAnnulerVente">Annuler</button>
+        </div>
+    </div>
+</div>
+
+<div id="notif" class="notif"></div>
+
+<div class="footer">
+    <h3>🍽️ WAMARKET.RESTO</h3>
+    <p>📞 +225 01 70 29 24 08</p>
+    <p style="margin-top:10px;font-size:12px;opacity:0.8">Développé par ROGWEB SERVICE</p>
+</div>
+
+<script>
+// ==================== DONNÉES ====================
+const PRODUITS_DEFAUT = [
+    {id:1,nom:"Attiéké Poisson",cat:"Plats",prix:2500,emoji:"🐟",photo:null,desc:"Attiéké poisson braisé"},
+    {id:2,nom:"Foutou Sauce Graine",cat:"Plats",prix:3000,emoji:"🍲",photo:null,desc:"Foutou sauce graine viande"},
+    {id:3,nom:"Riz Sauce Arachide",cat:"Plats",prix:2000,emoji:"🍚",photo:null,desc:"Riz sauce arachide poulet"},
+    {id:4,nom:"Kedjenou Poulet",cat:"Plats",prix:3500,emoji:"🍗",photo:null,desc:"Poulet mijoté aux légumes"},
+    {id:5,nom:"Garba",cat:"Plats",prix:1500,emoji:"🐟",photo:null,desc:"Attiéké thon frit"},
+    {id:6,nom:"Alloco",cat:"Entrées",prix:1000,emoji:"🍌",photo:null,desc:"Banane plantain frite"},
+    {id:7,nom:"Salade composée",cat:"Entrées",prix:1500,emoji:"🥗",photo:null,desc:"Salade fraîche"},
+    {id:8,nom:"Brochettes",cat:"Grillades",prix:2000,emoji:"🍢",photo:null,desc:"Brochettes de bœuf"},
+    {id:9,nom:"Poulet braisé",cat:"Grillades",prix:4000,emoji:"🔥",photo:null,desc:"Demi poulet braisé"},
+    {id:10,nom:"Poisson braisé",cat:"Grillades",prix:3500,emoji:"🐠",photo:null,desc:"Poisson entier braisé"},
+    {id:11,nom:"Bissap",cat:"Boissons",prix:500,emoji:"🍷",photo:null,desc:"Jus de bissap frais"},
+    {id:12,nom:"Gingembre",cat:"Boissons",prix:500,emoji:"🥤",photo:null,desc:"Jus de gingembre"},
+    {id:13,nom:"Coca-Cola",cat:"Boissons",prix:700,emoji:"🥫",photo:null,desc:"Canette 33cl"},
+    {id:14,nom:"Jus d'orange",cat:"Boissons",prix:800,emoji:"🍹",photo:null,desc:"Jus pressé"},
+    {id:15,nom:"Bière Flag",cat:"Boissons",prix:1000,emoji:"🍺",photo:null,desc:"Bière locale"},
+    {id:16,nom:"Eau minérale",cat:"Eau",prix:300,emoji:"💧",photo:null,desc:"Bouteille 50cl"},
+    {id:17,nom:"Eau 1.5L",cat:"Eau",prix:500,emoji:"💦",photo:null,desc:"Grande bouteille"},
+    {id:18,nom:"Salade de fruits",cat:"Désserts",prix:1500,emoji:"🍓",photo:null,desc:"Fruits frais"},
+    {id:19,nom:"Gâteau chocolat",cat:"Désserts",prix:1200,emoji:"🍰",photo:null,desc:"Gâteau moelleux"},
+    {id:20,nom:"Café",cat:"Petit-déjeuner",prix:500,emoji:"☕",photo:null,desc:"Café noir ou au lait"},
+    {id:21,nom:"Omelette",cat:"Petit-déjeuner",prix:1000,emoji:"🍳",photo:null,desc:"Omelette avec pain"}
+];
+
+// ==================== VARIABLES GLOBALES ====================
+let data;
+let categorieActive = 'Toutes';
+let produitVenteId = null;
+let photoBase64 = null;
+
+// ==================== STORAGE ====================
+function chargerDonnees() {
+    try {
+        const saved = localStorage.getItem('wamarketData');
+        if (saved) {
+            data = JSON.parse(saved);
+            if (!data.produits) data.produits = [...PRODUITS_DEFAUT];
+            if (!data.ventes) data.ventes = [];
+            if (!data.dernierId) data.dernierId = Math.max(...data.produits.map(p=>p.id), 0);
+        } else {
+            data = { produits: [...PRODUITS_DEFAUT], ventes: [], dernierId: 21 };
+            sauvegarder();
+        }
+    } catch(e) {
+        console.error('Erreur chargement:', e);
+        data = { produits: [...PRODUITS_DEFAUT], ventes: [], dernierId: 21 };
+    }
+}
+
+function sauvegarder() {
+    try {
+        localStorage.setItem('wamarketData', JSON.stringify(data));
+        return true;
+    } catch(e) {
+        console.error('Erreur sauvegarde:', e);
+        alert('⚠️ Erreur: stockage plein. Supprimez des photos.');
+        return false;
+    }
+}
+
+// ==================== NOTIFICATIONS ====================
+function jouerSon() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+        osc.start(); osc.stop(ctx.currentTime + 0.5);
+    } catch(e) {}
+}
+
+function notifier(msg, type) {
+    const n = document.getElementById('notif');
+    n.textContent = msg;
+    n.style.background = type==='rouge' ? 'linear-gradient(90deg,#D32F2F,#B71C1C)' :
+        type==='bleu' ? 'linear-gradient(90deg,#1976D2,#0D47A1)' :
+        'linear-gradient(90deg,#1B8E3A,#4CAF50)';
+    n.style.display = 'block';
+    setTimeout(() => n.style.display = 'none', 3000);
+}
+
+// ==================== NAVIGATION ====================
+function changerEcran(id, btn) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    actualiser();
+}
+
+// ==================== MODAL ====================
+function ouvrirModal(id) { document.getElementById(id).classList.add('show'); }
+function fermerModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function ouvrirAjout() {
+    photoBase64 = null;
+    document.getElementById('previewImg').style.display = 'none';
+    document.getElementById('previewImg').src = '';
+    document.getElementById('nomP').value = '';
+    document.getElementById('catP').value = '';
+    document.getElementById('prixP').value = '';
+    document.getElementById('emojiP').value = '';
+    document.getElementById('descP').value = '';
+    document.getElementById('photoP').value = '';
+    ouvrirModal('modalAjout');
+}
+
+// ==================== AJOUT PRODUIT ====================
+function ajouterProduit() {
+    const nom = document.getElementById('nomP').value.trim();
+    const cat = document.getElementById('catP').value;
+    const prix = parseInt(document.getElementById('prixP').value);
+    const emoji = document.getElementById('emojiP').value.trim() || '🍴';
+    const desc = document.getElementById('descP').value.trim();
+
+    if (!nom) { notifier('⚠️ Entrez le nom', 'rouge'); return; }
+    if (!cat) { notifier('⚠️ Choisissez une catégorie', 'rouge'); return; }
+    if (!prix || prix <= 0) { notifier('⚠️ Entrez un prix valide', 'rouge'); return; }
+
+    data.dernierId++;
+    const nouveau = {
+        id: data.dernierId,
+        nom: nom,
+        cat: cat,
+        prix: prix,
+        emoji: emoji,
+        photo: photoBase64,
+        desc: desc || 'Aucune description'
+    };
+    data.produits.push(nouveau);
+
+    if (sauvegarder()) {
+        jouerSon();
+        notifier(`✅ "${nom}" ajouté !`);
+        fermerModal('modalAjout');
+        actualiser();
+    }
+}
+
+// ==================== SUPPRESSION ====================
+function supprimerProduit(id) {
+    const p = data.produits.find(x => x.id === id);
+    if (!p) { notifier('⚠️ Produit introuvable', 'rouge'); return; }
+
+    if (confirm(`❌ Supprimer "${p.nom}" ?\n\nAction irréversible.`)) {
+        data.produits = data.produits.filter(x => x.id !== id);
+        if (sauvegarder()) {
+            notifier(`🗑️ "${p.nom}" supprimé`, 'rouge');
+            actualiser();
+        }
+    }
+}
+
+// ==================== VENTE ====================
+function ouvrirVente(id) {
+    produitVenteId = id;
+    const p = data.produits.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('infoVente').innerHTML =
+        `<p style="padding:15px;background:#E8F5E9;border-radius:8px;margin-bottom:10px">
+            <strong>${p.emoji} ${p.nom}</strong><br>
+            <span style="color:#D32F2F;font-size:18px;font-weight:bold">${p.prix} FCFA</span>
+        </p>`;
+    document.getElementById('qteV').value = 1;
+    document.getElementById('tableV').value = '';
+    ouvrirModal('modalVente');
+}
+
+function validerVente() {
+    const qte = parseInt(document.getElementById('qteV').value);
+    const table = document.getElementById('tableV').value.trim() || 'Comptoir';
+    const p = data.produits.find(x => x.id === produitVenteId);
+    if (!p) return;
+    if (!qte || qte < 1) { notifier('⚠️ Quantité invalide', 'rouge'); return; }
+
+    const total = qte * p.prix;
+    data.ventes.push({
+        produit: p.nom, emoji: p.emoji, qte, total, table,
+        heure: new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+        date: new Date().toLocaleDateString('fr-FR')
+    });
+    if (sauvegarder()) {
+        notifier(`💰 ${total.toLocaleString()} FCFA`, 'bleu');
+        jouerSon();
+        fermerModal('modalVente');
+        actualiser();
+    }
+}
+
+// ==================== RENDU ====================
+function creerCarte(p) {
+    const d = document.createElement('div');
+    d.className = 'produit-card';
+    const img = p.photo ? `<img src="${p.photo}" alt="${p.nom}">` : p.emoji;
+    d.innerHTML = `
+        <div class="produit-img">${img}</div>
+        <div class="produit-info">
+            <h3>${p.nom}</h3>
+            <span class="cat-tag">${p.cat}</span>
+            <p class="desc">${p.desc || ''}</p>
+            <div class="prix">${p.prix.toLocaleString()} FCFA</div>
+            <div class="actions">
+                <button class="btn btn-vert" data-action="vendre" data-id="${p.id}">🛒 Vendre</button>
+                <button class="btn btn-rouge" data-action="supprimer" data-id="${p.id}">🗑️</button>
+            </div>
+        </div>
+    `;
+    return d;
+}
+
+function creerCarteAjouter() {
+    const d = document.createElement('div');
+    d.className = 'card-ajouter';
+    d.innerHTML = `
+        <div class="plus">➕</div>
+        <h3>Ajouter un nouveau plat</h3>
+        <p>Cliquez ici pour ajouter un produit</p>
+    `;
+    d.addEventListener('click', ouvrirAjout);
+    return d;
+}
+
+function attacherEvenements(conteneur) {
+    conteneur.querySelectorAll('button[data-action]').forEach(btn => {
+        const action = btn.getAttribute('data-action');
+        const id = parseInt(btn.getAttribute('data-id'));
+        btn.addEventListener('click', () => {
+            if (action === 'vendre') ouvrirVente(id);
+            else if (action === 'supprimer') supprimerProduit(id);
+        });
+    });
+}
+
+function actualiser() {
+    const cats = [...new Set(data.produits.map(p => p.cat))];
+    document.getElementById('sProduits').textContent = data.produits.length;
+    document.getElementById('sCats').textContent = cats.length;
+    const today = new Date().toLocaleDateString('fr-FR');
+    const ventesAuj = data.ventes.filter(v => v.date === today);
+    const recette = ventesAuj.reduce((s,v)=>s+v.total,0);
+    document.getElementById('sRecette').textContent = recette.toLocaleString() + ' F';
+    document.getElementById('sVentes').textContent = ventesAuj.length;
+
+    // Accueil
+    const ga = document.getElementById('gridAccueil');
+    ga.innerHTML = '';
+    data.produits.slice(0,8).forEach(p => ga.appendChild(creerCarte(p)));
+    attacherEvenements(ga);
+
+    // Menu - catégories
+    const cb = document.getElementById('catsBar');
+    cb.innerHTML = '';
+    const btnAll = document.createElement('button');
+    btnAll.className = 'cat-btn' + (categorieActive==='Toutes'?' active':'');
+    btnAll.textContent = `📋 Toutes (${data.produits.length})`;
+    btnAll.addEventListener('click', () => { categorieActive='Toutes'; actualiser(); });
+    cb.appendChild(btnAll);
+    cats.forEach(c => {
+        const n = data.produits.filter(p=>p.cat===c).length;
+        const b = document.createElement('button');
+        b.className = 'cat-btn' + (categorieActive===c?' active':'');
+        b.textContent = `${c} (${n})`;
+        b.addEventListener('click', () => { categorieActive=c; actualiser(); });
+        cb.appendChild(b);
+    });
+
+    // Menu - produits
+    const gm = document.getElementById('gridMenu');
+    gm.innerHTML = '';
+    const filtres = categorieActive==='Toutes' ? data.produits : data.produits.filter(p=>p.cat===categorieActive);
+    filtres.forEach(p => gm.appendChild(creerCarte(p)));
+    attacherEvenements(gm);
+
+    // Galerie
+    const gg = document.getElementById('gridGalerie');
+    gg.innerHTML = '';
+    gg.appendChild(creerCarteAjouter());
+    data.produits.forEach(p => gg.appendChild(creerCarte(p)));
+    attacherEvenements(gg);
+
+    // Caisse
+    document.getElementById('totalJour').textContent = recette.toLocaleString() + ' FCFA';
+    const lc = document.getElementById('listeCaisse');
+    if (ventesAuj.length === 0) {
+        lc.innerHTML = '<div class="empty"><div style="font-size:60px">💰</div><p>Aucune vente</p></div>';
+    } else {
+        lc.innerHTML = '';
+        ventesAuj.slice().reverse().forEach(v => {
+            const d = document.createElement('div');
+            d.style.cssText = 'background:white;padding:15px;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #1B8E3A';
+            d.innerHTML = `<div><strong>${v.emoji} ${v.produit}</strong> × ${v.qte}<br><small>🪑 ${v.table} • ⏰ ${v.heure}</small></div><strong style="color:#1B8E3A">${v.total.toLocaleString()} F</strong>`;
+            lc.appendChild(d);
+        });
+    }
+
+    // Stats
+    const sd = document.getElementById('statsDetail');
+    sd.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card vert"><div class="icon">📦</div><h3>Produits</h3><div class="value">${data.produits.length}</div></div>
+            <div class="stat-card bleu"><div class="icon">🧾</div><h3>Ventes</h3><div class="value">${data.ventes.length}</div></div>
+            <div class="stat-card rouge"><div class="icon">💰</div><h3>Recette totale</h3><div class="value">${data.ventes.reduce((s,v)=>s+v.total,0).toLocaleString()} F</div></div>
+        </div>
+        <h3 style="margin:25px 0 15px;color:#0F5F24">Par catégorie</h3>
+        ${cats.map(c => {
+            const n = data.produits.filter(p=>p.cat===c).length;
+            return `<div style="background:white;padding:12px 18px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;border-left:4px solid #1976D2"><strong>${c}</strong><span>${n}</span></div>`;
+        }).join('')}
+    `;
+}
+
+// ==================== INITIALISATION ====================
+document.addEventListener('DOMContentLoaded', function() {
+    chargerDonnees();
+
+    // Navigation
+    document.querySelectorAll('.nav button').forEach(btn => {
+        btn.addEventListener('click', () => changerEcran(btn.getAttribute('data-screen'), btn));
+    });
+
+    // Boutons ajouter
+    document.getElementById('btnAddMenu').addEventListener('click', ouvrirAjout);
+    document.getElementById('btnAddGalerie').addEventListener('click', ouvrirAjout);
+
+    // Modal ajout
+    document.getElementById('btnValider').addEventListener('click', ajouterProduit);
+    document.getElementById('btnAnnuler').addEventListener('click', () => fermerModal('modalAjout'));
+
+    // Modal vente
+    document.getElementById('btnValiderVente').addEventListener('click', validerVente);
+    document.getElementById('btnAnnulerVente').addEventListener('click', () => fermerModal('modalVente'));
+
+    // Upload photo
+    document.getElementById('uploadZone').addEventListener('click', () => {
+        document.getElementById('photoP').click();
+    });
+    document.getElementById('photoP').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            photoBase64 = ev.target.result;
+            const img = document.getElementById('previewImg');
+            img.src = photoBase64;
+            img.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Fermer modal au clic extérieur
+    document.querySelectorAll('.modal').forEach(m => {
+        m.addEventListener('click', (e) => {
+            if (e.target === m) m.classList.remove('show');
+        });
+    });
+
+    // Horloge
+    function majHeure() {
+        document.getElementById('heure').textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    }
+    setInterval(majHeure, 1000);
+    majHeure();
+
+    actualiser();
+});
+</script>
+</body>
+</html>
