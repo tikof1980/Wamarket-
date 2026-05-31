@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAMARKET.RESTO</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --vert:#1B8E3A;--vert-f:#0F5F24;--vert-c:#4CAF50;
+  --bleu:#1976D2;--bleu-f:#0D47A1;
+  --rouge:#D32F2F;--rouge-f:#B71C1C;
+  --or:#F9A825;--or-f:#F57F17;
+  --dark:#1A1A2E;--card:#FFFFFF;
+  --bg1:#F0FFF4;--bg2:#E8F4FD;--bg3:#FFF3E0;
+}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#E8F5E9 0%,#E3F2FD 45%,#FFF8E1 100%);min-height:100vh;}
+
+/* ===== HEADER ===== */
+.header{
+  background:linear-gradient(135deg,var(--vert-f) 0%,var(--vert) 40%,var(--bleu) 80%,var(--bleu-f) 100%);
+  padding:0 20px;display:flex;justify-content:space-between;align-items:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);position:sticky;top:0;z-index:100;height:70px;
+  border-bottom:3px solid rgba(249,168,37,0.6);
+}
+.header-logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid rgba(255,255,255,0.3);}
+.header-logo h1{font-family:'Playfair Display',serif;font-size:20px;color:white;letter-spacing:1px;line-height:1.1;}
+.header-logo small{color:rgba(255,255,255,0.75);font-size:11px;font-weight:600;letter-spacing:2px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.badge-heure{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
+  color:white;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:1px;}
+.btn-admin{background:rgba(249,168,37,0.2);border:2px solid rgba(249,168,37,0.5);
+  color:#FFE082;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;
+  font-weight:800;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.btn-admin:hover{background:rgba(249,168,37,0.35);}
+.btn-admin.on{background:var(--or);color:#212121;border-color:var(--or);box-shadow:0 0 12px rgba(249,168,37,0.5);}
+
+/* ===== NAV ===== */
+.nav{
+  background:white;display:flex;justify-content:center;gap:4px;
+  padding:10px 15px;box-shadow:0 3px 12px rgba(0,0,0,0.08);
+  flex-wrap:wrap;position:sticky;top:70px;z-index:99;
+  border-bottom:2px solid #f0f0f0;
+}
+.nav button{
+  padding:9px 18px;border:none;background:#F5F5F5;
+  color:#555;border-radius:25px;cursor:pointer;font-weight:700;font-size:13px;
+  font-family:'Nunito',sans-serif;transition:all 0.25s;
+}
+.nav button:hover{background:#E8F5E9;color:var(--vert-f);}
+.nav button.active{background:linear-gradient(90deg,var(--vert),var(--bleu));color:white;
+  box-shadow:0 4px 12px rgba(27,142,58,0.35);}
+
+/* ===== CONTAINER ===== */
+.container{max-width:1400px;margin:0 auto;padding:28px 20px 120px;}
+.screen{display:none;}
+.screen.active{display:block;animation:fadeIn 0.35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HERO ACCUEIL ===== */
+.hero{
+  background:linear-gradient(135deg,var(--vert-f),var(--vert),var(--bleu));
+  border-radius:24px;padding:35px 40px;color:white;margin-bottom:30px;
+  position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.2);
+}
+.hero::before{content:'';position:absolute;right:-30px;top:-30px;
+  width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.08);}
+.hero::after{content:'';position:absolute;right:60px;bottom:-40px;
+  width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.06);}
+.hero h2{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px;}
+.hero p{opacity:0.85;font-size:15px;margin-bottom:20px;}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1;}
+.hs{background:rgba(255,255,255,0.15);border-radius:14px;padding:14px;text-align:center;
+  backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.2);}
+.hs .hi{font-size:28px;margin-bottom:4px;}
+.hs .hl{font-size:11px;opacity:0.8;font-weight:600;letter-spacing:0.5px;}
+.hs .hv{font-size:20px;font-weight:800;}
+
+/* ===== PAGE TITLE ===== */
+.page-title{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+  margin-bottom:24px;padding-bottom:14px;
+  border-bottom:3px solid transparent;
+  border-image:linear-gradient(90deg,var(--vert),var(--bleu),transparent) 1;
+}
+.page-title h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--vert-f);}
+
+/* ===== GRILLE PRODUITS ===== */
+.produits-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:22px;
+}
+
+/* ===== CARTE PRODUIT ===== */
+.produit-card{
+  background:white;border-radius:20px;overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,0.09);
+  transition:all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+  border:2px solid transparent;
+  position:relative;
+}
+.produit-card:hover{transform:translateY(-5px);box-shadow:0 14px 35px rgba(0,0,0,0.15);border-color:#E8F5E9;}
+.produit-card.stock-bas{border-color:rgba(211,47,47,0.4);}
+.produit-card.stock-bas::before{
+  content:'⚠️ STOCK BAS';position:absolute;top:0;left:0;right:0;
+  background:linear-gradient(90deg,var(--rouge),var(--rouge-f));
+  color:white;text-align:center;font-size:10px;font-weight:800;letter-spacing:1px;
+  padding:4px;z-index:2;
+}
+
+/* Image */
+.produit-img-wrap{position:relative;overflow:hidden;}
+.produit-img{
+  height:195px;background:linear-gradient(135deg,#E8F5E9,#E3F2FD);
+  display:flex;align-items:center;justify-content:center;
+  font-size:75px;overflow:hidden;transition:transform 0.4s;
+}
+.produit-card:hover .produit-img{transform:scale(1.05);}
+.produit-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
+.produit-card:hover .produit-img img{transform:scale(1.08);}
+.stock-pill{
+  position:absolute;bottom:10px;right:10px;
+  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:800;color:white;
+  letter-spacing:0.3px;backdrop-filter:blur(4px);
+}
+.stock-pill.ok{background:rgba(27,142,58,0.88);}
+.stock-pill.bas{background:rgba(211,47,47,0.92);animation:pulse-pill 1.2s infinite;}
+@keyframes pulse-pill{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+/* Infos carte */
+.produit-info{padding:16px 18px 18px;}
+.cat-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(90deg,var(--bleu),var(--bleu-f));
+  color:white;padding:3px 10px;border-radius:12px;font-size:11px;
+  font-weight:700;letter-spacing:0.3px;margin-bottom:8px;
+}
+.produit-info h3{
+  font-family:'Playfair Display',serif;color:var(--vert-f);
+  font-size:18px;margin-bottom:5px;line-height:1.3;
+}
+.desc{color:#777;font-size:13px;margin-bottom:12px;min-height:38px;line-height:1.5;}
+.prix-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.prix{
+  color:var(--rouge);font-size:22px;font-weight:800;
+  font-family:'Playfair Display',serif;
+}
+.prix-unit{font-size:12px;color:#aaa;font-weight:600;}
+.actions{display:flex;gap:8px;}
+.btn{
+  flex:1;padding:10px 8px;border:none;border-radius:10px;
+  cursor:pointer;font-weight:800;font-size:13px;
+  font-family:'Nunito',sans-serif;transition:all 0.2s;
+}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn-vert{background:linear-gradient(135deg,var(--vert),var(--vert-f));color:white;}
+.btn-rouge{background:linear-gradient(135deg,var(--rouge),var(--rouge-f));color:white;}
+.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:white;}
+.btn-sm{padding:10px;flex:0 0 44px;}
+.btn-add-top{
+  background:linear-gradient(90deg,var(--vert),var(--bleu));color:white;
+  padding:11px 22px;border:none;border-radius:25px;font-size:14px;
+  font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(27,142,58,0.35);
+  font-family:'Nunito',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:6px;
+}
+.btn-add-top:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(27,142,58,0.45);}
+
+/* ===== CATÉGORIES BAR ===== */
+.cats-bar{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;
+  padding:14px 16px;background:white;border-radius:16px;
+  box-shadow:0 3px 12px rgba(0,0,0,0.07);
+}
+.cat-btn{
+  padding:9px 18px;border:2px solid #ddd;background:white;
+  color:#555;border-radius:25px;cursor:pointer;font-weight:700;font-size:13px;
+  font-family:'Nunito',sans-serif;transition:all 0.22s;
+}
+.cat-btn:hover{border-color:var(--vert);color:var(--vert-f);}
+.cat-btn.active{background:linear-gradient(90deg,var(--vert),var(--bleu));color:white;border-color:transparent;
+  box-shadow:0 3px 10px rgba(27,142,58,0.3);}
+
+/* ===== CARD AJOUTER ===== */
+.card-ajouter{
+  background:linear-gradient(135deg,#F0FFF4,#E3F2FD);
+  border:3px dashed #90CAF9;border-radius:20px;min-height:340px;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;cursor:pointer;padding:25px;text-align:center;transition:all 0.3s;
+}
+.card-ajouter:hover{background:linear-gradient(135deg,#C8E6C9,#BBDEFB);transform:scale(1.02);border-color:var(--vert);}
+.card-ajouter .plus{font-size:64px;margin-bottom:12px;}
+.card-ajouter h3{color:var(--vert-f);font-family:'Playfair Display',serif;font-size:19px;margin-bottom:6px;}
+.card-ajouter p{color:#888;font-size:13px;}
+
+/* ===== CAISSE ===== */
+.caisse-header{
+  background:linear-gradient(135deg,var(--vert),var(--bleu));
+  border-radius:20px;padding:28px;color:white;margin-bottom:24px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+.caisse-header h3{font-size:15px;opacity:0.85;margin-bottom:6px;}
+.caisse-header .montant{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;}
+.vente-row{
+  background:white;padding:16px 20px;border-radius:14px;margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-left:5px solid var(--vert);box-shadow:0 3px 10px rgba(0,0,0,0.06);
+  transition:all 0.2s;
+}
+.vente-row:hover{transform:translateX(3px);}
+.vente-produit{font-weight:700;color:#333;font-size:15px;}
+.vente-meta{color:#888;font-size:12px;margin-top:3px;}
+.vente-total{color:var(--vert-f);font-size:18px;font-weight:800;font-family:'Playfair Display',serif;}
+
+/* ===== STATS PAGE ===== */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-bottom:28px;}
+.stat-card{padding:24px;border-radius:18px;color:white;box-shadow:0 6px 20px rgba(0,0,0,0.15);transition:transform 0.2s;}
+.stat-card:hover{transform:translateY(-3px);}
+.stat-card.vert{background:linear-gradient(135deg,#1B8E3A,#0F5F24);}
+.stat-card.bleu{background:linear-gradient(135deg,#1976D2,#0D47A1);}
+.stat-card.rouge{background:linear-gradient(135deg,#D32F2F,#B71C1C);}
+.stat-card.or{background:linear-gradient(135deg,#F9A825,#E65100);}
+.stat-card .si{font-size:38px;margin-bottom:8px;}
+.stat-card .sl{font-size:13px;opacity:0.85;font-weight:600;margin-bottom:4px;}
+.stat-card .sv{font-size:26px;font-weight:800;font-family:'Playfair Display',serif;}
+
+/* ===== MODALS ===== */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:1000;overflow-y:auto;backdrop-filter:blur(3px);}
+.modal.show{display:flex;align-items:flex-start;justify-content:center;padding:20px;}
+.modal-content{
+  background:white;width:100%;max-width:500px;padding:32px;
+  border-radius:22px;border-top:6px solid var(--vert);margin:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.25);
+}
+.modal-content h2{font-family:'Playfair Display',serif;color:var(--vert-f);margin-bottom:20px;font-size:22px;}
+.modal-content label{display:block;font-weight:700;color:var(--vert-f);margin-top:14px;font-size:13px;letter-spacing:0.3px;}
+.modal-content input,.modal-content select,.modal-content textarea{
+  width:100%;padding:12px 14px;margin:5px 0;border:2px solid #E0E0E0;
+  border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;
+  transition:border-color 0.2s;
+}
+.modal-content input:focus,.modal-content select:focus,.modal-content textarea:focus{border-color:var(--vert);}
+.upload-zone{
+  border:3px dashed #90CAF9;border-radius:14px;padding:24px;
+  text-align:center;background:#E3F2FD;cursor:pointer;margin:10px 0;transition:all 0.3s;
+}
+.upload-zone:hover{background:#BBDEFB;}
+.upload-zone.has-image{border-color:var(--vert);background:#E8F5E9;}
+.upload-zone .upload-icon{font-size:42px;margin-bottom:8px;}
+.upload-zone p{color:#1976D2;font-weight:700;font-size:14px;}
+#previewImg{width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-top:10px;border:3px solid var(--vert);display:none;}
+.progress-bar{width:100%;height:7px;background:#ddd;border-radius:4px;margin-top:8px;display:none;}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--vert),var(--bleu));width:0%;border-radius:4px;transition:width 0.3s;}
+.modal-actions{display:flex;gap:10px;margin-top:22px;}
+.stock-seuil{font-size:12px;color:#E65100;margin-top:3px;font-weight:600;}
+
+/* ===== NOTIF TOAST ===== */
+.notif{
+  position:fixed;top:85px;right:20px;
+  color:white;padding:14px 22px;border-radius:12px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.3);z-index:2000;
+  display:none;font-weight:700;font-size:14px;max-width:300px;
+  animation:slideInR 0.3s ease;
+}
+@keyframes slideInR{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ===== ALERTE STOCK ===== */
+#stockAlertes{position:fixed;top:85px;left:20px;z-index:2000;display:flex;flex-direction:column;gap:10px;max-width:300px;}
+.alerte-stock{
+  background:linear-gradient(135deg,#B71C1C,#D32F2F);
+  color:white;padding:14px 18px;border-radius:14px;
+  box-shadow:0 6px 20px rgba(183,28,28,0.5);font-size:13px;font-weight:700;
+  animation:alerteIn 0.4s ease;border-left:5px solid #FF8A80;
+  display:flex;align-items:center;gap:10px;
+}
+@keyframes alerteIn{from{opacity:0;transform:translateX(-25px) scale(0.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+
+/* ===== CHATBOT IA ===== */
+#chatBtn{
+  position:fixed;bottom:90px;right:20px;width:62px;height:62px;
+  background:linear-gradient(135deg,#7B1FA2,#1976D2);
+  border-radius:50%;border:none;cursor:pointer;font-size:28px;
+  box-shadow:0 6px 22px rgba(123,31,162,0.5);z-index:500;
+  display:flex;align-items:center;justify-content:center;
+  animation:chatFloat 3.5s ease-in-out infinite;transition:transform 0.2s;
+}
+#chatBtn:hover{transform:scale(1.1);}
+@keyframes chatFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+#chatBadge{
+  position:absolute;top:-4px;right:-4px;background:var(--rouge);
+  color:white;border-radius:50%;width:20px;height:20px;font-size:10px;
+  display:none;align-items:center;justify-content:center;font-weight:800;border:2px solid white;
+}
+#chatPanel{
+  position:fixed;bottom:165px;right:20px;width:340px;max-height:520px;
+  background:white;border-radius:22px;box-shadow:0 12px 45px rgba(0,0,0,0.22);
+  z-index:500;display:none;flex-direction:column;overflow:hidden;
+  border:2px solid #E8EAF6;
+}
+#chatPanel.open{display:flex;animation:panelUp 0.3s ease;}
+@keyframes panelUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.chat-header{
+  background:linear-gradient(135deg,#7B1FA2,#1976D2);
+  color:white;padding:14px 18px;display:flex;align-items:center;gap:10px;
+}
+.ai-avatar{width:38px;height:38px;background:rgba(255,255,255,0.2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid rgba(255,255,255,0.3);}
+.chat-header-info h4{font-size:14px;font-weight:800;margin:0;}
+.chat-header-info small{opacity:0.8;font-size:11px;}
+.chat-close{margin-left:auto;background:none;border:none;color:white;font-size:18px;cursor:pointer;width:28px;height:28px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.chat-close:hover{background:rgba(255,255,255,0.2);}
+#chatMessages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#F3F0FF;min-height:180px;}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.55;}
+.msg.bot{background:white;border:1px solid #E8EAF6;align-self:flex-start;border-bottom-left-radius:4px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.07);}
+.msg.user{background:linear-gradient(135deg,#7B1FA2,#1976D2);color:white;align-self:flex-end;border-bottom-right-radius:4px;}
+.typing-dots span{display:inline-block;width:7px;height:7px;background:#9E9E9E;border-radius:50%;margin:0 2px;animation:tdot 1.2s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.speak-btn{
+  background:none;border:none;cursor:pointer;font-size:14px;
+  margin-left:6px;opacity:0.6;transition:opacity 0.2s;vertical-align:middle;
+}
+.speak-btn:hover{opacity:1;}
+.quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px;background:#F3F0FF;}
+.qr{padding:6px 12px;background:white;border:1.5px solid #7B1FA2;color:#7B1FA2;
+  border-radius:20px;font-size:12px;cursor:pointer;font-weight:700;font-family:'Nunito',sans-serif;transition:all 0.2s;}
+.qr:hover{background:#7B1FA2;color:white;}
+.chat-input-row{padding:10px 12px;background:white;display:flex;gap:8px;border-top:1px solid #EEE;}
+.chat-input-row input{
+  flex:1;padding:10px 14px;border:2px solid #E8EAF6;border-radius:25px;
+  font-size:13px;outline:none;font-family:'Nunito',sans-serif;
+}
+.chat-input-row input:focus{border-color:#7B1FA2;}
+.chat-send{
+  background:linear-gradient(135deg,#7B1FA2,#1976D2);color:white;
+  border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+/* ===== WHATSAPP FAB ===== */
+.wa-fab{
+  position:fixed;bottom:20px;right:20px;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:white;border:none;border-radius:30px;padding:14px 20px;
+  font-size:15px;font-weight:800;cursor:pointer;z-index:500;
+  box-shadow:0 6px 22px rgba(37,211,102,0.55);
+  display:flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;
+  animation:waPulse 2.5s infinite;
+}
+@keyframes waPulse{0%,100%{box-shadow:0 6px 22px rgba(37,211,102,0.55)}50%{box-shadow:0 8px 32px rgba(37,211,102,0.8)}}
+
+/* ===== MODAL ADMIN ===== */
+#modalAdmin .modal-content{border-top-color:var(--or);max-width:380px;}
+.lock-icon{font-size:55px;text-align:center;margin-bottom:12px;}
+.admin-ok-banner{
+  background:linear-gradient(90deg,var(--or),var(--or-f));
+  color:#212121;padding:10px;border-radius:10px;font-weight:800;
+  font-size:13px;text-align:center;display:none;margin-bottom:14px;
+}
+
+/* ===== EMPTY ===== */
+.empty{text-align:center;padding:60px 20px;color:#AAA;}
+.empty .ei{font-size:65px;margin-bottom:14px;}
+
+/* ===== LOADING ===== */
+.loading{
+  position:fixed;inset:0;background:linear-gradient(135deg,var(--vert-f),var(--bleu-f));
+  z-index:9999;display:flex;align-items:center;justify-content:center;
+  color:white;flex-direction:column;gap:18px;
+}
+.spinner{width:52px;height:52px;border:5px solid rgba(255,255,255,0.25);
+  border-top-color:white;border-radius:50%;animation:spin 0.9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-logo{font-family:'Playfair Display',serif;font-size:22px;letter-spacing:2px;opacity:0.9;}
+
+/* ===== FOOTER ===== */
+.footer{
+  background:linear-gradient(135deg,var(--vert-f),var(--bleu-f));
+  color:white;padding:28px;text-align:center;margin-top:40px;
+}
+.footer h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;}
+.footer p{opacity:0.8;font-size:13px;margin:3px 0;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .produits-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+  #chatPanel{width:calc(100vw - 32px);right:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading" class="loading">
+  <div class="spinner"></div>
+  <div class="loading-logo">🍽️ WAMARKET.RESTO</div>
+  <div style="font-size:14px;opacity:0.7">Chargement en cours...</div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-logo">
+    <div class="logo-icon">🍽️</div>
+    <div>
+      <h1>WAMARKET.RESTO</h1>
+      <small>CUISINE IVOIRIENNE</small>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="badge-heure" id="heure">--:--</div>
+    <button class="btn-admin" id="btnAdminHeader" onclick="toggleAdminLogin()">🔐 Admin</button>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="active" data-screen="accueil">🏠 Accueil</button>
+  <button data-screen="menu">🍲 Menu</button>
+  <button data-screen="galerie">🖼️ Galerie</button>
+  <button data-screen="caisse">💰 Caisse</button>
+  <button data-screen="stats">📊 Stats</button>
+</nav>
+
+<div class="container">
+
+  <!-- ===== ACCUEIL ===== -->
+  <div id="accueil" class="screen active">
+    <div class="hero">
+      <h2>🌟 Bienvenue au WAMARKET.RESTO</h2>
+      <p>La meilleure cuisine ivoirienne — Commandez facilement via WhatsApp</p>
+      <div class="hero-stats">
+        <div class="hs"><div class="hi">🍲</div><div class="hl">PRODUITS</div><div class="hv" id="sProduits">0</div></div>
+        <div class="hs"><div class="hi">📦</div><div class="hl">CATÉGORIES</div><div class="hv" id="sCats">0</div></div>
+        <div class="hs"><div class="hi">💵</div><div class="hl">RECETTE JOUR</div><div class="hv" id="sRecette">0F</div></div>
+        <div class="hs"><div class="hi">🧾</div><div class="hl">VENTES</div><div class="hv" id="sVentes">0</div></div>
+      </div>
+    </div>
+    <div class="page-title"><h2>🌟 Nos Spécialités</h2></div>
+    <div class="produits-grid" id="gridAccueil"></div>
+  </div>
+
+  <!-- ===== MENU ===== -->
+  <div id="menu" class="screen">
+    <div class="page-title">
+      <h2>🍲 Notre Menu</h2>
+      <button class="btn-add-top admin-only" id="btnAddMenu">➕ Ajouter un plat</button>
+    </div>
+    <div class="cats-bar" id="catsBar"></div>
+    <div class="produits-grid" id="gridMenu"></div>
+  </div>
+
+  <!-- ===== GALERIE ===== -->
+  <div id="galerie" class="screen">
+    <div class="page-title">
+      <h2>🖼️ Galerie des Plats</h2>
+      <button class="btn-add-top admin-only" id="btnAddGalerie">➕ Ajouter un plat</button>
+    </div>
+    <div class="produits-grid" id="gridGalerie"></div>
+  </div>
+
+  <!-- ===== CAISSE ===== -->
+  <div id="caisse" class="screen">
+    <div class="page-title"><h2>💰 Caisse du Jour</h2></div>
+    <div class="caisse-header">
+      <h3>💰 Total encaissé aujourd'hui</h3>
+      <div class="montant" id="totalJour">0 FCFA</div>
+    </div>
+    <div id="listeCaisse"></div>
+  </div>
+
+  <!-- ===== STATS ===== -->
+  <div id="stats" class="screen">
+    <div class="page-title"><h2>📊 Statistiques</h2></div>
+    <div id="statsDetail"></div>
+  </div>
+
+</div>
+
+<!-- ===== MODAL ADMIN ===== -->
+<div id="modalAdmin" class="modal">
+  <div class="modal-content">
+    <div class="lock-icon">🔐</div>
+    <h2 style="text-align:center;font-size:20px">Espace Administrateur</h2>
+    <div class="admin-ok-banner" id="adminBanner">👑 Mode Admin Activé !</div>
+    <label>Mot de passe</label>
+    <input type="password" id="mdpAdmin" placeholder="Entrer le mot de passe" onkeydown="if(event.key==='Enter')validerAdmin()">
+    <p id="errAdmin" style="color:red;font-size:13px;margin-top:6px;display:none">❌ Mot de passe incorrect !</p>
+    <div class="modal-actions">
+      <button class="btn btn-vert" onclick="validerAdmin()">🔓 Connexion</button>
+      <button class="btn btn-rouge" onclick="fermerModal('modalAdmin')">Annuler</button>
+    </div>
+    <div style="margin-top:16px;text-align:center">
+      <button id="btnDeconn" style="display:none;background:none;border:none;color:#D32F2F;cursor:pointer;font-weight:800;font-size:13px;font-family:'Nunito',sans-serif;" onclick="deconnecterAdmin()">🚪 Se déconnecter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL AJOUT ===== -->
+<div id="modalAjout" class="modal">
+  <div class="modal-content">
+    <h2>➕ Ajouter un plat</h2>
+    <label>📸 Photo du plat</label>
+    <div class="upload-zone" id="uploadZone">
+      <div class="upload-icon">📷</div>
+      <p>Appuyer ici pour choisir une photo</p>
+      <small style="color:#666">Depuis votre galerie ou caméra</small>
+    </div>
+    <input type="file" id="photoP" accept="image/*" style="display:none">
+    <div class="progress-bar" id="progressBar"><div class="fill" id="progressFill"></div></div>
+    <img id="previewImg" alt="Aperçu">
+    <label>🍽️ Nom du plat *</label>
+    <input type="text" id="nomP" placeholder="Ex: Riz au gras, Attiéké...">
+    <label>📂 Catégorie *</label>
+    <select id="catP">
+      <option value="">-- Choisir --</option>
+      <option value="Plats">🍲 Plats</option>
+      <option value="Entrées">🥗 Entrées</option>
+      <option value="Boissons">🥤 Boissons</option>
+      <option value="Eau">💧 Eau</option>
+      <option value="Désserts">🍰 Désserts</option>
+      <option value="Grillades">🔥 Grillades</option>
+      <option value="Petit-déjeuner">☕ Petit-déjeuner</option>
+    </select>
+    <label>💰 Prix (FCFA) *</label>
+    <input type="number" id="prixP" placeholder="Ex: 2500" min="1">
+    <label>📦 Stock disponible</label>
+    <input type="number" id="stockP" placeholder="Ex: 20" min="0" value="10">
+    <p class="stock-seuil">⚠️ Alerte sonore + vocale si stock ≤ 3</p>
+    <label>😀 Emoji (si pas de photo)</label>
+    <input type="text" id="emojiP" placeholder="🍛" maxlength="4">
+    <label>📝 Description</label>
+    <textarea id="descP" rows="3" placeholder="Décris le plat..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-vert" id="btnValider">✅ Enregistrer</button>
+      <button class="btn btn-rouge" id="btnAnnuler">❌ Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL VENTE ===== -->
+<div id="modalVente" class="modal">
+  <div class="modal-content">
+    <h2>🛒 Enregistrer une vente</h2>
+    <div id="infoVente"></div>
+    <label>Quantité</label>
+    <input type="number" id="qteV" value="1" min="1">
+    <label>Table / Client</label>
+    <input type="text" id="tableV" placeholder="Ex: Table 5, M. Koné...">
+    <div class="modal-actions">
+      <button class="btn btn-vert" id="btnValiderVente">💰 Valider la vente</button>
+      <button class="btn btn-rouge" id="btnAnnulerVente">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHATBOT IA ===== -->
+<button id="chatBtn" onclick="toggleChat()">
+  🤖<div id="chatBadge" class="chat-badge" style="display:none">!</div>
+</button>
+
+<div id="chatPanel">
+  <div class="chat-header">
+    <div class="ai-avatar">🤖</div>
+    <div class="chat-header-info">
+      <h4>Assistant WAMARKET</h4>
+      <small>IA vocale — Je connais tout le menu</small>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="chatMessages"></div>
+  <div class="quick-replies">
+    <button class="qr" onclick="sendQuick('Voir le menu complet')">📋 Menu</button>
+    <button class="qr" onclick="sendQuick('Plats moins de 2000 FCFA')">💰 Pas cher</button>
+    <button class="qr" onclick="sendQuick('Que recommandez-vous ?')">⭐ Reco</button>
+    <button class="qr" onclick="sendQuick('Comment commander ?')">🛒 Commander</button>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')envoyerMessage()">
+    <button class="chat-send" onclick="envoyerMessage()">➤</button>
+  </div>
+</div>
+
+<!-- WhatsApp FAB -->
+<button class="wa-fab" onclick="ouvrirWhatsApp()">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  Commander
+</button>
+
+<!-- Alertes stock -->
+<div id="stockAlertes"></div>
+<div id="notif" class="notif"></div>
+
+<footer class="footer">
+  <h3>🍽️ WAMARKET.RESTO</h3>
+  <p>📞 +225 01 70 29 24 08</p>
+  <p style="margin-top:10px;font-size:11px;opacity:0.65">Développé par ROGWEB SERVICE</p>
+</footer>
+
+<script>
+// ============================================================
+// ÉTAT GLOBAL
+// ============================================================
+let db;
+let data = { produits:[], ventes:[], dernierId:0 };
+let categorieActive = 'Toutes';
+let produitVenteId = null;
+let photoBase64 = null;
+let isAdmin = false;
+let chatOuvert = false;
+let chatHistorique = [];
+let voixSpeech = null;
+let alertesDejaLancees = new Set(); // pour éviter la répétition
+
+const ADMIN_PWD = 'tikof1980';
+const WA_NUMBER = '2250170292408';
+
+const DEFAUT = [
+  {id:1,nom:"Attiéké Poisson",cat:"Plats",prix:2500,emoji:"🐟",photo:null,desc:"Attiéké poisson braisé",stock:10},
+  {id:2,nom:"Foutou Sauce Graine",cat:"Plats",prix:3000,emoji:"🍲",photo:null,desc:"Foutou sauce graine viande",stock:10},
+  {id:3,nom:"Riz Sauce Arachide",cat:"Plats",prix:2000,emoji:"🍚",photo:null,desc:"Riz sauce arachide poulet",stock:10},
+  {id:4,nom:"Kedjenou Poulet",cat:"Plats",prix:3500,emoji:"🍗",photo:null,desc:"Poulet mijoté aux légumes",stock:10},
+  {id:5,nom:"Garba",cat:"Plats",prix:1500,emoji:"🐟",photo:null,desc:"Attiéké thon frit",stock:10},
+  {id:6,nom:"Alloco",cat:"Entrées",prix:1000,emoji:"🍌",photo:null,desc:"Banane plantain frite",stock:15},
+  {id:7,nom:"Brochettes",cat:"Grillades",prix:2000,emoji:"🍢",photo:null,desc:"Brochettes de bœuf",stock:8},
+  {id:8,nom:"Poulet braisé",cat:"Grillades",prix:4000,emoji:"🔥",photo:null,desc:"Demi poulet braisé",stock:5},
+  {id:9,nom:"Bissap",cat:"Boissons",prix:500,emoji:"🍷",photo:null,desc:"Jus de bissap frais",stock:20},
+  {id:10,nom:"Coca-Cola",cat:"Boissons",prix:700,emoji:"🥫",photo:null,desc:"Canette 33cl",stock:24},
+  {id:11,nom:"Eau minérale",cat:"Eau",prix:300,emoji:"💧",photo:null,desc:"Bouteille 50cl",stock:30},
+  {id:12,nom:"Salade de fruits",cat:"Désserts",prix:1500,emoji:"🍓",photo:null,desc:"Fruits frais",stock:7},
+  {id:13,nom:"Café",cat:"Petit-déjeuner",prix:500,emoji:"☕",photo:null,desc:"Café noir ou au lait",stock:15},
+];
+
+// ============================================================
+// SYNTHÈSE VOCALE (Text-to-Speech)
+// ============================================================
+function parler(texte, urgent) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(texte);
+  utt.lang = 'fr-FR';
+  utt.rate = urgent ? 0.88 : 0.95;
+  utt.pitch = urgent ? 1.2 : 1.05;
+  utt.volume = 1.0;
+  // Choisir une voix française si disponible
+  const voix = window.speechSynthesis.getVoices();
+  const fr = voix.find(v => v.lang.startsWith('fr'));
+  if (fr) utt.voice = fr;
+  window.speechSynthesis.speak(utt);
+}
+
+// ============================================================
+// SONNERIE D'ALERTE STOCK (3 fois, forte)
+// ============================================================
+function jouerAlerteStock(nomProduit, stockRestant) {
+  const cle = nomProduit + '_' + stockRestant;
+  if (alertesDejaLancees.has(cle)) return;
+  alertesDejaLancees.add(cle);
+
+  let count = 0;
+  function uneSonnerie() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      // Sonnerie d'alarme forte
+      const jouerNote = (freq, debut, duree, vol) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sawtooth';
+        const t = ctx.currentTime + debut;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(vol, t + 0.05);
+        gain.gain.setValueAtTime(vol, t + duree - 0.05);
+        gain.gain.linearRampToValueAtTime(0, t + duree);
+        osc.start(t); osc.stop(t + duree);
+      };
+      // Motif d'alarme répété
+      jouerNote(880, 0, 0.15, 0.7);
+      jouerNote(660, 0.18, 0.15, 0.7);
+      jouerNote(880, 0.36, 0.15, 0.7);
+      jouerNote(440, 0.54, 0.25, 0.8);
+    } catch(e) {}
+    count++;
+    if (count < 3) {
+      setTimeout(uneSonnerie, 1000);
+    } else {
+      // Après 3 sonneries : message vocal
+      setTimeout(() => {
+        const msg = `Attention ! Le stock de ${nomProduit} est très bas. Il ne reste que ${stockRestant} en stock. Veuillez réapprovisionner rapidement !`;
+        parler(msg, true);
+      }, 500);
+    }
+  }
+  uneSonnerie();
+}
+
+// Son de vente (succès)
+function jouerSon() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [523,659,784,1047].forEach((freq, i) => {
+      const osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq; osc.type = 'sine';
+      const t = ctx.currentTime + i * 0.1;
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+      osc.start(t); osc.stop(t + 0.25);
+    });
+  } catch(e) {}
+}
+
+// ============================================================
+// STOCKAGE LOCAL (localStorage) — fonctionne partout sur Android
+// ============================================================
+function ouvrirDB() { return Promise.resolve(); }
+
+function sauvegarderProduit(produit) {
+  try {
+    const all = JSON.parse(localStorage.getItem('wm_produits') || '[]');
+    const idx = all.findIndex(p => p.id === produit.id);
+    if (idx >= 0) all[idx] = produit; else all.push(produit);
+    localStorage.setItem('wm_produits', JSON.stringify(all));
+  } catch(e) {}
+  return Promise.resolve();
+}
+
+function supprimerProduitDB(id) {
+  try {
+    const all = JSON.parse(localStorage.getItem('wm_produits') || '[]');
+    localStorage.setItem('wm_produits', JSON.stringify(all.filter(p => p.id !== id)));
+  } catch(e) {}
+  return Promise.resolve();
+}
+
+function chargerProduits() {
+  try {
+    return Promise.resolve(JSON.parse(localStorage.getItem('wm_produits') || '[]'));
+  } catch(e) { return Promise.resolve([]); }
+}
+
+function sauvegarderVente(vente) {
+  try {
+    const all = JSON.parse(localStorage.getItem('wm_ventes') || '[]');
+    vente.id = Date.now() + Math.random();
+    all.push(vente);
+    localStorage.setItem('wm_ventes', JSON.stringify(all));
+  } catch(e) {}
+  return Promise.resolve();
+}
+
+function chargerVentes() {
+  try {
+    return Promise.resolve(JSON.parse(localStorage.getItem('wm_ventes') || '[]'));
+  } catch(e) { return Promise.resolve([]); }
+}
+
+function sauvegarderConfig(cle, valeur) {
+  try { localStorage.setItem('wm_cfg_' + cle, JSON.stringify(valeur)); } catch(e) {}
+  return Promise.resolve();
+}
+
+function chargerConfig(cle) {
+  try {
+    const v = localStorage.getItem('wm_cfg_' + cle);
+    return Promise.resolve(v !== null ? JSON.parse(v) : null);
+  } catch(e) { return Promise.resolve(null); }
+}
+
+// ============================================================
+// COMPRESSION IMAGE
+// ============================================================
+function compresserImage(file) {
+  return new Promise(resolve => {
+    const pb = document.getElementById('progressBar');
+    const pf = document.getElementById('progressFill');
+    pb.style.display = 'block'; pf.style.width = '20%';
+    const reader = new FileReader();
+    reader.onload = e => {
+      pf.style.width = '50%';
+      const img = new Image();
+      img.onload = () => {
+        pf.style.width = '80%';
+        const canvas = document.createElement('canvas');
+        let w = img.width, h = img.height, max = 800;
+        if (w > max || h > max) {
+          if (w > h) { h = Math.round(h * max / w); w = max; }
+          else { w = Math.round(w * max / h); h = max; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const result = canvas.toDataURL('image/jpeg', 0.72);
+        pf.style.width = '100%';
+        setTimeout(() => { pb.style.display = 'none'; resolve(result); }, 300);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ============================================================
+// NOTIFICATION TOAST
+// ============================================================
+function notifier(msg, type) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.style.background =
+    type==='rouge' ? 'linear-gradient(90deg,#D32F2F,#B71C1C)' :
+    type==='bleu' ? 'linear-gradient(90deg,#1976D2,#0D47A1)' :
+    type==='orange' ? 'linear-gradient(90deg,#E65100,#FF6D00)' :
+    'linear-gradient(90deg,#1B8E3A,#4CAF50)';
+  n.style.display = 'block';
+  setTimeout(() => n.style.display = 'none', 3800);
+}
+
+// ============================================================
+// VÉRIFICATION STOCKS — SONNERIE + VOIX + ALERTE VISUELLE
+// ============================================================
+function verifierStocks() {
+  const bas = data.produits.filter(p => (p.stock || 0) <= 3);
+  const zone = document.getElementById('stockAlertes');
+  zone.innerHTML = '';
+  bas.forEach((p, idx) => {
+    // Alerte visuelle
+    const el = document.createElement('div');
+    el.className = 'alerte-stock';
+    el.innerHTML = `<span style="font-size:22px">🚨</span><div><strong>${p.emoji||'🍴'} ${p.nom}</strong><br><small>Stock critique : ${p.stock} restants</small></div>`;
+    zone.appendChild(el);
+    setTimeout(() => el.remove(), 10000);
+    // Sonnerie et voix (avec délai pour éviter superposition)
+    setTimeout(() => jouerAlerteStock(p.nom, p.stock || 0), idx * 5000);
+  });
+  if (bas.length > 0) {
+    const badge = document.getElementById('chatBadge');
+    badge.style.display = 'flex';
+    badge.textContent = bas.length;
+  }
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function toggleAdminLogin() { ouvrirModal('modalAdmin'); }
+function validerAdmin() {
+  const pwd = document.getElementById('mdpAdmin').value;
+  if (pwd === ADMIN_PWD) {
+    isAdmin = true;
+    document.body.classList.add('admin-active');
+    document.getElementById('btnAdminHeader').textContent = '👑 Admin';
+    document.getElementById('btnAdminHeader').classList.add('on');
+    document.getElementById('adminBanner').style.display = 'block';
+    document.getElementById('btnDeconn').style.display = 'block';
+    document.getElementById('errAdmin').style.display = 'none';
+    document.getElementById('mdpAdmin').value = '';
+    fermerModal('modalAdmin');
+    notifier('👑 Mode Admin activé !', 'bleu');
+    parler('Bienvenue administrateur. Mode admin activé.', false);
+    actualiser();
+  } else {
+    document.getElementById('errAdmin').style.display = 'block';
+    document.getElementById('mdpAdmin').value = '';
+  }
+}
+function deconnecterAdmin() {
+  isAdmin = false;
+  document.body.classList.remove('admin-active');
+  document.getElementById('btnAdminHeader').textContent = '🔐 Admin';
+  document.getElementById('btnAdminHeader').classList.remove('on');
+  document.getElementById('adminBanner').style.display = 'none';
+  document.getElementById('btnDeconn').style.display = 'none';
+  fermerModal('modalAdmin');
+  notifier('🔒 Déconnecté');
+  actualiser();
+}
+
+// ============================================================
+// WHATSAPP
+// ============================================================
+function ouvrirWhatsApp() {
+  const liste = data.produits.map(p => `• ${p.emoji||'🍴'} ${p.nom} — ${p.prix.toLocaleString()} FCFA`).join('\n');
+  const msg = `🍽️ Bonjour WAMARKET.RESTO !\n\nJe souhaite passer une commande.\n\nMENU :\n${liste}\n\nPouvez-vous me conseiller ? 😊`;
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+}
+function commanderProduit(id) {
+  const p = data.produits.find(x => x.id === id);
+  if (!p) return;
+  const msg = `🍽️ Bonjour WAMARKET.RESTO !\n\nJe voudrais commander :\n✅ *${p.nom}* — ${p.prix.toLocaleString()} FCFA\n\nMerci !`;
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ============================================================
+// IA CHATBOT AVEC VOIX
+// ============================================================
+function toggleChat() {
+  chatOuvert = !chatOuvert;
+  const panel = document.getElementById('chatPanel');
+  if (chatOuvert) {
+    panel.classList.add('open');
+    document.getElementById('chatBadge').style.display = 'none';
+    if (chatHistorique.length === 0) {
+      const msg = 'Bonjour ! 👋 Je suis l\'assistant IA de **WAMARKET.RESTO**.\n\nJe connais tout notre menu et je peux aussi vous parler ! Que puis-je faire pour vous ? 😊';
+      ajouterMsgBot(msg, true);
+    }
+  } else {
+    panel.classList.remove('open');
+    window.speechSynthesis && window.speechSynthesis.cancel();
+  }
+}
+
+function sendQuick(texte) {
+  document.getElementById('chatInput').value = texte;
+  envoyerMessage();
+}
+
+function ajouterMsgUser(texte) {
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.textContent = texte;
+  document.getElementById('chatMessages').appendChild(div);
+  scrollChat();
+}
+
+function ajouterMsgBot(texte, autoVoix) {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  const clean = texte.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  // Bouton parler
+  const texteVoix = texte.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\n/g,' ');
+  const btnId = 'speak_' + Date.now();
+  div.innerHTML = clean + ` <button class="speak-btn" id="${btnId}" onclick="parlerMsg('${btnId}','${texteVoix.replace(/'/g,"\\'")}')">🔊</button>`;
+  document.getElementById('chatMessages').appendChild(div);
+  scrollChat();
+  if (autoVoix) {
+    setTimeout(() => parler(texteVoix.substring(0,200), false), 400);
+  }
+}
+
+window.parlerMsg = function(btnId, texte) {
+  parler(texte.substring(0,300), false);
+};
+
+function afficherTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg bot'; div.id = 'typingMsg';
+  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  document.getElementById('chatMessages').appendChild(div);
+  scrollChat();
+  return div;
+}
+
+function scrollChat() {
+  const m = document.getElementById('chatMessages');
+  m.scrollTop = m.scrollHeight;
+}
+
+async function envoyerMessage() {
+  const input = document.getElementById('chatInput');
+  const texte = input.value.trim();
+  if (!texte) return;
+  input.value = '';
+  ajouterMsgUser(texte);
+  chatHistorique.push({ role:'user', content:texte });
+  const typing = afficherTyping();
+
+  const menuTexte = data.produits.map(p =>
+    `- ${p.nom} (${p.cat}) : ${p.prix.toLocaleString()} FCFA — ${p.desc||''} [Stock: ${p.stock||0}]`
+  ).join('\n');
+
+  const systemPrompt = `Tu es l'assistant IA chaleureux et professionnel du restaurant WAMARKET.RESTO à Abidjan, Côte d'Ivoire.
+Tu parles français avec une touche ivoirienne conviviale. Tu es enthousiaste, souriant et très à l'écoute.
+Tes réponses seront lues à voix haute, donc parle naturellement, comme une vraie personne en face du client.
+Évite les listes à puces quand possible, préfère des phrases naturelles et chaleureuses.
+
+MENU COMPLET :
+${menuTexte}
+
+INFOS :
+- WhatsApp/Téléphone : +225 01 70 29 24 08
+- Pour commander : bouton "Commander" sur chaque plat ou bouton vert WhatsApp
+- Développé par ROGWEB SERVICE
+
+STYLE DE RÉPONSE :
+- Parle comme une vraie personne accueillante, pas comme un robot
+- Utilise "je vous conseille", "personnellement je recommande", "vous allez vous régaler avec..."
+- Si stock faible (≤3), mentionne-le avec tact
+- Propose des combos plat+boisson avec le total
+- Maximum 120 mots sauf si on demande le menu complet
+- Commence parfois par "Ah oui !", "Bien sûr !", "Excellente idée !" pour être naturel`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:380,
+        system: systemPrompt,
+        messages: chatHistorique.slice(-8)
+      })
+    });
+    const json = await resp.json();
+    typing.remove();
+    const reponse = json.content?.[0]?.text || 'Désolé ! Contactez-nous au +225 01 70 29 24 08 😊';
+    ajouterMsgBot(reponse, true); // true = lire automatiquement
+    chatHistorique.push({ role:'assistant', content:reponse });
+  } catch(e) {
+    typing.remove();
+    const err = 'Désolé, problème de connexion. Appelez-nous au +225 01 70 29 24 08 ! 😊';
+    ajouterMsgBot(err, true);
+  }
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+document.querySelectorAll('.nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.screen).classList.add('active');
+    actualiser();
+  });
+});
+
+// ============================================================
+// MODALS
+// ============================================================
+function ouvrirModal(id) { document.getElementById(id).classList.add('show'); }
+function fermerModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
+});
+
+function ouvrirAjout() {
+  if (!isAdmin) { notifier('🔐 Accès réservé à l\'admin', 'rouge'); return; }
+  photoBase64 = null;
+  ['previewImg'].forEach(id => { const el = document.getElementById(id); el.style.display='none'; el.src=''; });
+  ['nomP','prixP','emojiP','descP'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('catP').value = '';
+  document.getElementById('stockP').value = '10';
+  document.getElementById('photoP').value = '';
+  const zone = document.getElementById('uploadZone');
+  zone.className = 'upload-zone';
+  zone.innerHTML = '<div class="upload-icon">📷</div><p>Appuyer ici pour choisir une photo</p><small style="color:#666">Depuis votre galerie ou caméra</small>';
+  ouvrirModal('modalAjout');
+}
+
+document.getElementById('uploadZone').addEventListener('click', () => document.getElementById('photoP').click());
+document.getElementById('photoP').addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file || !file.type.startsWith('image/')) { notifier('⚠️ Image invalide','rouge'); return; }
+  notifier('🔄 Traitement...','bleu');
+  photoBase64 = await compresserImage(file);
+  const preview = document.getElementById('previewImg');
+  preview.src = photoBase64; preview.style.display = 'block';
+  const zone = document.getElementById('uploadZone');
+  zone.className = 'upload-zone has-image';
+  zone.innerHTML = '<div class="upload-icon">✅</div><p style="color:#1B8E3A;font-weight:800">Photo chargée !</p><small>Appuyer pour changer</small>';
+  notifier('✅ Photo prête !');
+});
+
+document.getElementById('btnValider').addEventListener('click', async function() {
+  if (!isAdmin) return;
+  const nom = document.getElementById('nomP').value.trim();
+  const cat = document.getElementById('catP').value;
+  const prix = parseInt(document.getElementById('prixP').value);
+  const stock = parseInt(document.getElementById('stockP').value) || 10;
+  const emoji = document.getElementById('emojiP').value.trim() || '🍴';
+  const desc = document.getElementById('descP').value.trim();
+  if (!nom) { notifier('⚠️ Entrez le nom du plat !','rouge'); return; }
+  if (!cat) { notifier('⚠️ Choisissez une catégorie !','rouge'); return; }
+  if (!prix || prix < 1) { notifier('⚠️ Prix invalide !','rouge'); return; }
+  data.dernierId++;
+  await sauvegarderConfig('dernierId', data.dernierId);
+  const produit = { id:data.dernierId, nom, cat, prix, emoji, stock, photo:photoBase64||null, desc:desc||'Délicieux plat' };
+  await sauvegarderProduit(produit);
+  data.produits.push(produit);
+  jouerSon();
+  notifier('✅ "' + nom + '" ajouté !');
+  fermerModal('modalAjout');
+  actualiser();
+});
+
+document.getElementById('btnAnnuler').addEventListener('click', () => fermerModal('modalAjout'));
+document.getElementById('btnAddMenu').addEventListener('click', ouvrirAjout);
+document.getElementById('btnAddGalerie').addEventListener('click', ouvrirAjout);
+
+async function supprimerProduit(id) {
+  if (!isAdmin) { notifier('🔐 Seul l\'admin peut supprimer','rouge'); return; }
+  const p = data.produits.find(x => x.id === id);
+  if (!p) return;
+  if (confirm('❌ Supprimer "' + p.nom + '" ?\nCette action est irréversible !')) {
+    await supprimerProduitDB(id);
+    data.produits = data.produits.filter(x => x.id !== id);
+    notifier('🗑️ "' + p.nom + '" supprimé','rouge');
+    actualiser();
+  }
+}
+
+function ouvrirVente(id) {
+  if (!isAdmin) { notifier('🔐 Seul l\'admin peut enregistrer une vente','rouge'); return; }
+  produitVenteId = id;
+  const p = data.produits.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('infoVente').innerHTML =
+    `<div style="padding:14px;background:linear-gradient(135deg,#E8F5E9,#E3F2FD);border-radius:12px;margin-bottom:14px">
+      <div style="font-size:28px">${p.emoji||'🍴'}</div>
+      <strong style="font-size:16px;color:#0F5F24">${p.nom}</strong><br>
+      <span style="color:#D32F2F;font-size:22px;font-weight:800;font-family:'Playfair Display',serif">${p.prix.toLocaleString()} FCFA</span><br>
+      <small style="color:#666">Stock disponible : ${p.stock||0}</small>
+    </div>`;
+  document.getElementById('qteV').value = 1;
+  document.getElementById('tableV').value = '';
+  ouvrirModal('modalVente');
+}
+
+document.getElementById('btnValiderVente').addEventListener('click', async function() {
+  const qte = parseInt(document.getElementById('qteV').value);
+  const table = document.getElementById('tableV').value.trim() || 'Comptoir';
+  const p = data.produits.find(x => x.id === produitVenteId);
+  if (!p || !qte || qte < 1) { notifier('⚠️ Quantité invalide','rouge'); return; }
+  if ((p.stock||0) < qte) { notifier(`⚠️ Stock insuffisant ! (${p.stock||0} dispo)`,'rouge'); return; }
+  const vente = {
+    produit:p.nom, emoji:p.emoji||'🍴', qte, total:qte*p.prix, table,
+    heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+    date:new Date().toLocaleDateString('fr-FR')
+  };
+  p.stock = (p.stock||0) - qte;
+  await sauvegarderProduit(p);
+  await sauvegarderVente(vente);
+  data.ventes.push(vente);
+  jouerSon();
+  notifier(`💰 Vente : ${vente.total.toLocaleString()} FCFA`,'bleu');
+  fermerModal('modalVente');
+  // Vérifier si le stock est maintenant bas
+  if (p.stock <= 3) {
+    alertesDejaLancees.delete(p.nom + '_' + (p.stock + qte)); // reset pour nouvelle alerte
+    setTimeout(() => verifierStocks(), 1500);
+  } else {
+    verifierStocks();
+  }
+  actualiser();
+});
+document.getElementById('btnAnnulerVente').addEventListener('click', () => fermerModal('modalVente'));
+
+// ============================================================
+// CRÉER CARTE PRODUIT
+// ============================================================
+function creerCarte(p) {
+  const d = document.createElement('div');
+  const stockBas = p.stock !== undefined && p.stock <= 3;
+  d.className = 'produit-card' + (stockBas ? ' stock-bas' : '');
+
+  const imgZone = p.photo
+    ? `<img src="${p.photo}" alt="${p.nom}">`
+    : `<span style="font-size:72px">${p.emoji||'🍴'}</span>`;
+
+  const stockPill = p.stock !== undefined
+    ? `<span class="stock-pill ${p.stock <= 3 ? 'bas' : 'ok'}">${p.stock <= 3 ? '⚠️ ' : ''}${p.stock} restants</span>`
+    : '';
+
+  const adminBtns = isAdmin
+    ? `<button class="btn btn-vert" data-id="${p.id}" data-action="vendre">🛒 Vendre</button>
+       <button class="btn btn-rouge btn-sm" data-id="${p.id}" data-action="supprimer">🗑️</button>`
+    : '';
+
+  d.innerHTML = `
+    <div class="produit-img-wrap">
+      <div class="produit-img">${imgZone}</div>
+      ${stockPill}
+    </div>
+    <div class="produit-info">
+      <span class="cat-tag">${p.cat}</span>
+      <h3>${p.nom}</h3>
+      <p class="desc">${p.desc||''}</p>
+      <div class="prix-row">
+        <div class="prix">${p.prix.toLocaleString()} <span class="prix-unit">FCFA</span></div>
+      </div>
+      <div class="actions">
+        ${adminBtns}
+        <button class="btn btn-wa" data-id="${p.id}" data-action="commander">📲 Commander</button>
+      </div>
+    </div>`;
+
+  d.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.dataset.id);
+      if (btn.dataset.action === 'vendre') ouvrirVente(id);
+      else if (btn.dataset.action === 'supprimer') supprimerProduit(id);
+      else if (btn.dataset.action === 'commander') commanderProduit(id);
+    });
+  });
+  return d;
+}
+
+// ============================================================
+// ACTUALISER TOUT
+// ============================================================
+function actualiser() {
+  const cats = [...new Set(data.produits.map(p => p.cat))];
+  const today = new Date().toLocaleDateString('fr-FR');
+  const ventesAuj = data.ventes.filter(v => v.date === today);
+  const recette = ventesAuj.reduce((s,v) => s+v.total, 0);
+
+  document.getElementById('sProduits').textContent = data.produits.length;
+  document.getElementById('sCats').textContent = cats.length;
+  document.getElementById('sRecette').textContent = recette.toLocaleString() + 'F';
+  document.getElementById('sVentes').textContent = ventesAuj.length;
+
+  // ACCUEIL
+  const ga = document.getElementById('gridAccueil');
+  ga.innerHTML = '';
+  data.produits.slice(0,8).forEach(p => ga.appendChild(creerCarte(p)));
+
+  // MENU — catégories
+  const cb = document.getElementById('catsBar');
+  cb.innerHTML = '';
+  const btnAll = document.createElement('button');
+  btnAll.className = 'cat-btn' + (categorieActive==='Toutes' ? ' active' : '');
+  btnAll.textContent = `📋 Toutes (${data.produits.length})`;
+  btnAll.addEventListener('click', () => { categorieActive='Toutes'; actualiser(); });
+  cb.appendChild(btnAll);
+  cats.forEach(c => {
+    const n = data.produits.filter(p=>p.cat===c).length;
+    const b = document.createElement('button');
+    b.className = 'cat-btn' + (categorieActive===c ? ' active' : '');
+    b.textContent = `${c} (${n})`;
+    b.addEventListener('click', () => { categorieActive=c; actualiser(); });
+    cb.appendChild(b);
+  });
+  const gm = document.getElementById('gridMenu');
+  gm.innerHTML = '';
+  const filtres = categorieActive==='Toutes' ? data.produits : data.produits.filter(p=>p.cat===categorieActive);
+  if (filtres.length === 0) {
+    gm.innerHTML = '<div class="empty"><div class="ei">🍽️</div><p>Aucun plat dans cette catégorie</p></div>';
+  } else { filtres.forEach(p => gm.appendChild(creerCarte(p))); }
+
+  // GALERIE
+  const gg = document.getElementById('gridGalerie');
+  gg.innerHTML = '';
+  if (isAdmin) {
+    const ca = document.createElement('div');
+    ca.className = 'card-ajouter';
+    ca.innerHTML = '<div class="plus">➕</div><h3>Ajouter un plat</h3><p>Appuyer pour ajouter avec photo</p>';
+    ca.addEventListener('click', ouvrirAjout);
+    gg.appendChild(ca);
+  }
+  data.produits.forEach(p => gg.appendChild(creerCarte(p)));
+
+  // CAISSE
+  document.getElementById('totalJour').textContent = recette.toLocaleString() + ' FCFA';
+  const lc = document.getElementById('listeCaisse');
+  lc.innerHTML = '';
+  if (ventesAuj.length === 0) {
+    lc.innerHTML = '<div class="empty"><div class="ei">💰</div><p>Aucune vente enregistrée aujourd\'hui</p></div>';
+  } else {
+    ventesAuj.slice().reverse().forEach(v => {
+      const el = document.createElement('div');
+      el.className = 'vente-row';
+      el.innerHTML = `<div>
+        <div class="vente-produit">${v.emoji} ${v.produit} × ${v.qte}</div>
+        <div class="vente-meta">🪑 ${v.table} &nbsp;•&nbsp; ⏰ ${v.heure}</div>
+      </div>
+      <div class="vente-total">${v.total.toLocaleString()} F</div>`;
+      lc.appendChild(el);
+    });
+  }
+
+  // STATS
+  const stocksBas = data.produits.filter(p=>(p.stock||0)<=3);
+  document.getElementById('statsDetail').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card vert"><div class="si">📦</div><div class="sl">Produits</div><div class="sv">${data.produits.length}</div></div>
+      <div class="stat-card bleu"><div class="si">🧾</div><div class="sl">Ventes totales</div><div class="sv">${data.ventes.length}</div></div>
+      <div class="stat-card or"><div class="si">💰</div><div class="sl">Recette totale</div><div class="sv">${data.ventes.reduce((s,v)=>s+v.total,0).toLocaleString()} F</div></div>
+      <div class="stat-card rouge"><div class="si">⚠️</div><div class="sl">Stocks bas</div><div class="sv">${stocksBas.length}</div></div>
+    </div>
+    <h3 style="margin:24px 0 14px;color:#0F5F24;font-family:'Playfair Display',serif">Par catégorie</h3>
+    ${cats.map(c => {
+      const n = data.produits.filter(p=>p.cat===c).length;
+      return `<div style="background:white;padding:14px 20px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;border-left:5px solid #1976D2;box-shadow:0 2px 8px rgba(0,0,0,0.06)"><strong>${c}</strong><span style="color:#1976D2;font-weight:700">${n} produit(s)</span></div>`;
+    }).join('')}
+    <h3 style="margin:24px 0 14px;color:#D32F2F;font-family:'Playfair Display',serif">⚠️ Stocks critiques (≤ 3)</h3>
+    ${stocksBas.length === 0
+      ? '<div style="color:#888;padding:14px;background:white;border-radius:12px">✅ Tous les stocks sont bons</div>'
+      : stocksBas.map(p => `<div style="background:#FFEBEE;padding:14px 20px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;border-left:5px solid #D32F2F;box-shadow:0 2px 8px rgba(211,47,47,0.1)"><strong>${p.emoji||'🍴'} ${p.nom}</strong><span style="color:#D32F2F;font-weight:800">⚠️ ${p.stock||0} restants</span></div>`).join('')
+    }`;
+}
+
+// ============================================================
+// HORLOGE
+// ============================================================
+function majHeure() {
+  document.getElementById('heure').textContent =
+    new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+majHeure();
+setInterval(majHeure, 1000);
+setInterval(verifierStocks, 300000);
+
+// ============================================================
+// DÉMARRAGE
+// ============================================================
+async function demarrer() {
+  try {
+    await ouvrirDB();
+    const lastId = await chargerConfig('dernierId');
+    data.dernierId = lastId || 13;
+    const produits = await chargerProduits();
+    if (produits.length === 0) {
+      for (const p of DEFAUT) await sauvegarderProduit(p);
+      data.produits = [...DEFAUT];
+    } else {
+      data.produits = produits.map(p => ({ ...p, stock: p.stock !== undefined ? p.stock : 10 }));
+    }
+    data.ventes = await chargerVentes();
+    document.getElementById('loading').style.display = 'none';
+    // Charger les voix (async sur certains navigateurs)
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+    actualiser();
+    setTimeout(verifierStocks, 2500);
+  } catch(e) {
+    document.getElementById('loading').innerHTML =
+      `<div style="color:#FF8A80;text-align:center;padding:20px">❌ Erreur: ${e.message}</div>`;
+  }
+}
+
+demarrer();
+</script>
+</body>
+</html>
